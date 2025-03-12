@@ -17,6 +17,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPapers, setFilteredPapers] = useState([]);
+  const [error, setError] = useState(null);
 
   // 検索時の論文フィルタリング
   useEffect(() => {
@@ -28,11 +29,14 @@ const App = () => {
     const lowercaseSearch = searchTerm.toLowerCase();
     const filtered = papers.filter(paper => {
       const { metadata } = paper;
+      // metadataがない場合や必要なプロパティがない場合のガード節
+      if (!metadata) return false;
+      
       return (
-        metadata.title.toLowerCase().includes(lowercaseSearch) ||
-        metadata.authors.some(author => author.toLowerCase().includes(lowercaseSearch)) ||
+        (metadata.title && metadata.title.toLowerCase().includes(lowercaseSearch)) ||
+        (metadata.authors && metadata.authors.some(author => author.toLowerCase().includes(lowercaseSearch))) ||
         (metadata.doi && metadata.doi.toLowerCase().includes(lowercaseSearch)) ||
-        metadata.tags.some(tag => tag.toLowerCase().includes(lowercaseSearch))
+        (metadata.tags && metadata.tags.some(tag => tag.toLowerCase().includes(lowercaseSearch)))
       );
     });
     
@@ -43,6 +47,11 @@ const App = () => {
   useEffect(() => {
     const initialize = async () => {
       try {
+        // paperAPIの存在チェック
+        if (!window.paperAPI) {
+          throw new Error('paperAPIが見つかりません。Electron環境で正しく実行されているか確認してください。');
+        }
+        
         // 設定を読み込む
         const appSettings = await window.paperAPI.getSettings();
         setSettings(appSettings);
@@ -60,6 +69,7 @@ const App = () => {
         }
       } catch (error) {
         console.error('初期化エラー:', error);
+        setError(`初期化エラー: ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -68,13 +78,25 @@ const App = () => {
     initialize();
     
     // PapersScanned イベントのリスナーを設定
-    const unsubscribe = window.paperAPI.onPapersScanned((newPapers) => {
-      setPapers(newPapers);
-    });
+    let unsubscribe = () => {};
+    
+    try {
+      if (window.paperAPI && window.paperAPI.onPapersScanned) {
+        unsubscribe = window.paperAPI.onPapersScanned((newPapers) => {
+          setPapers(newPapers);
+        });
+      }
+    } catch (error) {
+      console.error('イベントリスナー設定エラー:', error);
+    }
     
     // クリーンアップ関数
     return () => {
-      if (unsubscribe) unsubscribe();
+      try {
+        if (unsubscribe) unsubscribe();
+      } catch (e) {
+        console.error('イベントリスナー解除エラー:', e);
+      }
     };
   }, []);
   
@@ -92,6 +114,8 @@ const App = () => {
   // 設定変更時の処理
   const handleSettingsChange = async (newSettings) => {
     try {
+      if (!window.paperAPI) return;
+      
       const updatedSettings = await window.paperAPI.updateSettings(newSettings);
       setSettings(updatedSettings);
       
@@ -112,6 +136,8 @@ const App = () => {
   // 論文メタデータ更新時の処理
   const handleMetadataUpdate = async (id, updatedMetadata) => {
     try {
+      if (!window.paperAPI) return;
+      
       await window.paperAPI.saveMetadata({ id, metadata: updatedMetadata });
       
       // 論文リストを更新
@@ -131,33 +157,31 @@ const App = () => {
   const handleScanPapers = async () => {
     setLoading(true);
     try {
+      if (!window.paperAPI) {
+        throw new Error('paperAPIが利用できません');
+      }
+      
       const paperData = await window.paperAPI.scanPapers();
       setPapers(paperData);
     } catch (error) {
       console.error('論文スキャンエラー:', error);
+      setError(`スキャンエラー: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-  // BibTeX をインポートしてメタデータに反映
-  // const handleImportBibTeX = async () => {
-  //   const result = await window.paperAPI.importBibtex();
-  //   if (result.success && result.entries.length > 0) {
-  //     const updatedPapers = papers.map((paper) => {
-  //       const bibEntry = result.entries.find(
-  //         (entry) => entry.entryTags.title?.toLowerCase() === paper.metadata.title?.toLowerCase()
-  //       );
-  //       return bibEntry
-  //         ? { ...paper, metadata: { ...paper.metadata, ...bibEntry.entryTags } }
-  //         : paper;
-  //     });
 
-  //     setPapers(updatedPapers);
-  //     updatedPapers.forEach((paper) => window.paperAPI.saveMetadata(paper));
-  //   } else {
-  //     console.error("BibTeX のインポートに失敗しました");
-  //   }
-  // };
+  // エラー表示
+  if (error) {
+    return (
+      <div className="error-container">
+        <h2>エラーが発生しました</h2>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>再読み込み</button>
+      </div>
+    );
+  }
+
   // メインレンダリング
   return (
     <div className={`app-container ${darkMode ? 'dark' : 'light'}`}>
