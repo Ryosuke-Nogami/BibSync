@@ -38,7 +38,7 @@ PaperManagerは、研究者や学生のための論文管理アプリケーシ�
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/yourusername/paper-manager.git
+git clone https://github.com/Ryosuke-Nogami/paper-manager.git
 cd paper-manager
 
 # 依存パッケージをインストール
