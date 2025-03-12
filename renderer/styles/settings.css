@@ -1,0 +1,47 @@
+/* styles/settings.css */
+.settings-container {
+  padding: 20px;
+}
+
+.settings-container h2 {
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  color: var(--sidebar-text);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-color);
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.form-group.checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.form-group.checkbox input {
+  margin-right: 8px;
+}
+
+.form-group.checkbox label {
+  margin-bottom: 0;
+}
+
+.save-button {
+  margin-top: 10px;
+  padding: 8px 16px;
+}

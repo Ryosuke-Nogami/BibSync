@@ -1,0 +1,65 @@
+{
+  "name": "paper-manager",
+  "version": "1.0.0",
+  "description": "論文管理アプリケーション",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "webpack && electron-builder",
+    "dev": "webpack --watch & nodemon --watch main.js --watch preload.js --exec electron .",
+    "webpack": "webpack"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^8.7.0",
+    "bibtex-parser-js": "^0.0.2",
+    "electron-store": "^8.2.0",
+    "katex": "^0.16.21",
+    "markdown-it": "^13.0.2",
+    "monaco-editor": "^0.36.1",
+    "pdfjs-dist": "^3.11.174",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^8.0.7",
+    "rehype-katex": "^6.0.3",
+    "remark-math": "^5.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.9",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.26.3",
+    "babel-loader": "^10.0.0",
+    "css-loader": "^7.1.2",
+    "electron": "^24.8.8",
+    "electron-builder": "^23.6.0",
+    "electron-rebuild": "^3.2.9",
+    "nodemon": "^2.0.22",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "build": {
+    "appId": "com.yourdomain.papermanager",
+    "productName": "論文管理",
+    "mac": {
+      "category": "public.app-category.education",
+      "icon": "assets/icons/app-icon.icns"
+    },
+    "win": {
+      "icon": "assets/icons/app-icon.ico"
+    },
+    "linux": {
+      "category": "Education",
+      "icon": "assets/icons/app-icon.png"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "services/**/*",
+      "assets/**/*"
+    ]
+  },
+  "keywords": []
+}

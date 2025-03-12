@@ -1,0 +1,76 @@
+
+/* styles/mainView.css */
+.main-view {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-color);
+  overflow: hidden;
+}
+
+.main-view-empty {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--sidebar-text);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+
+.paper-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--secondary-background);
+}
+
+.paper-header h1 {
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.paper-authors {
+  margin-bottom: 12px;
+  color: var(--text-color);
+}
+
+.paper-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tabs {
+  display: flex;
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab {
+  padding: 12px 20px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  background-color: var(--secondary-background);
+}
+
+.tab.active {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: var(--background-color);
+}

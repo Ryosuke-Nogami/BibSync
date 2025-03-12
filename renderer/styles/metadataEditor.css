@@ -1,0 +1,306 @@
+/* metadataEditor.css */
+.metadata-editor {
+  padding: 20px;
+  position: relative;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group.half {
+  flex: 1;
+}
+
+.doi-input {
+  display: flex;
+}
+
+.doi-input input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.doi-input button {
+  padding: 8px 15px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.authors-list, .tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.author-item, .tag-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: #f0f2f5;
+  border-radius: 4px;
+}
+
+.tag-item {
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  color: #999;
+  margin-left: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.remove-button:hover {
+  color: #f5222d;
+}
+
+.add-author, .add-tag {
+  display: flex;
+  margin-top: 5px;
+}
+
+.add-author input, .add-tag input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.add-author button, .add-tag button {
+  padding: 8px 15px;
+  background-color: #52c41a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.save-button {
+  padding: 10px 20px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.bibtex-button {
+  padding: 10px 20px;
+  background-color: #722ed1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* BibTeX エディタのオーバーレイ */
+.bib-editor-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.bib-editor-container {
+  width: 80%;
+  height: 80%;
+  max-width: 1000px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ステータスメッセージ */
+.status-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  z-index: 100;
+  animation: fadeIn 0.3s, fadeOut 0.5s 2.5s;
+  max-width: 300px;
+}
+
+.status-message.success {
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  color: #52c41a;
+}
+
+.status-message.error {
+  background-color: #fff2f0;
+  border: 1px solid #ffccc7;
+  color: #f5222d;
+}
+
+.status-message.info {
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  color: #1890ff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* ダークモード対応 */
+.dark .metadata-editor {
+  color: #eee;
+}
+
+.dark .form-group input[type="text"] {
+  background-color: #333;
+  border-color: #555;
+  color: #eee;
+}
+
+.dark .author-item {
+  background-color: #333;
+  color: #eee;
+}
+
+.dark .tag-item {
+  background-color: #003a8c;
+  border-color: #1890ff;
+  color: #eee;
+}
+
+.dark .remove-button {
+  color: #aaa;
+}
+
+.dark .remove-button:hover {
+  color: #ff7875;
+}
+
+.dark .bib-editor-container {
+  background-color: #1f1f1f;
+  color: #eee;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .bib-editor-container {
+    width: 95%;
+    height: 95%;
+  }
+
+  /* 未保存の変更警告バナー */
+  .unsaved-changes-warning {
+    background-color: #fffbe6;
+    border: 1px solid #ffe58f;
+    color: #d48806;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dark .unsaved-changes-warning {
+    background-color: #3f3000;
+    border-color: #614700;
+    color: #faad14;
+  }
+
+  .save-now-button {
+    background-color: #faad14;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .save-now-button:hover {
+    background-color: #d48806;
+  }
+
+  /* 保存ボタンのハイライト */
+  .save-button.save-needed {
+    background-color: #fa8c16;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(250, 140, 22, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(250, 140, 22, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(250, 140, 22, 0);
+    }
+  }
+
+  .save-button:disabled {
+    background-color: #d9d9d9;
+    color: #999;
+    cursor: not-allowed;
+    animation: none;
+  }
+
+  .dark .save-button:disabled {
+    background-color: #424242;
+    color: #767676;
+  }
+}

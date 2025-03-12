@@ -1,0 +1,65 @@
+/* styles/paperDetails.css */
+.paper-details {
+  padding: 0;
+}
+
+.detail-section {
+  margin-bottom: 24px;
+  background-color: var(--card-background);
+  border-radius: 6px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.detail-section h3 {
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.detail-item {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.detail-item .label {
+  width: 120px;
+  font-weight: 500;
+  color: var(--sidebar-text);
+}
+
+.detail-item .value {
+  flex: 1;
+}
+
+.detail-item .path {
+  font-family: monospace;
+  font-size: 0.9rem;
+  background-color: var(--secondary-background);
+  padding: 4px 8px;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.detail-item .link {
+  color: var(--primary-color);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.detail-item .tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.action-button {
+  padding: 8px 16px;
+}

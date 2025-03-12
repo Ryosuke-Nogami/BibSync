@@ -1,0 +1,206 @@
+.bib-editor {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color, #fff);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bib-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--border-color, #ddd);
+}
+
+.bib-editor-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--text-secondary, #666);
+}
+
+.close-button:hover {
+  color: var(--text-primary, #333);
+}
+
+.bib-editor-content {
+  display: flex;
+  flex: 1;
+  padding: 15px;
+  overflow: auto;
+}
+
+.bib-input-area {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px;
+}
+
+.bibtex-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 200px;
+  padding: 10px;
+  font-family: monospace;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.entry-list {
+  flex: 1;
+  min-width: 200px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 4px;
+  padding: 10px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.entry-list h3 {
+  margin-top: 0;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.entry-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.entry-list li {
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 5px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.entry-list li:hover {
+  background-color: var(--hover-bg, #f5f5f5);
+}
+
+.entry-list li.selected {
+  background-color: var(--selected-bg, #e6f7ff);
+  border-color: var(--primary-color, #1890ff);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid var(--border-color, #ddd);
+  background-color: var(--button-bg, #f5f5f5);
+  transition: all 0.3s;
+}
+
+.button-group button:hover:not(:disabled) {
+  background-color: var(--button-hover-bg, #e6e6e6);
+}
+
+.button-group button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.import-button {
+  background-color: var(--secondary-color, #faad14) !important;
+  color: white;
+}
+
+.parse-button {
+  background-color: var(--primary-color, #1890ff) !important;
+  color: white;
+}
+
+.bib-editor-footer {
+  padding: 10px 15px;
+  border-top: 1px solid var(--border-color, #ddd);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.apply-button {
+  padding: 8px 15px;
+  background-color: var(--success-color, #52c41a);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.apply-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: var(--error-color, #f5222d);
+  margin-top: 10px;
+  padding: 8px;
+  background-color: rgba(245, 34, 45, 0.1);
+  border-radius: 4px;
+}
+
+.loading-indicator {
+  margin-top: 10px;
+  color: var(--text-secondary, #666);
+  font-style: italic;
+}
+
+/* ダークモード対応 */
+.dark .bib-editor {
+  --bg-color: #1f1f1f;
+  --border-color: #555;
+  --text-primary: #eee;
+  --text-secondary: #aaa;
+  --button-bg: #333;
+  --button-hover-bg: #444;
+  --hover-bg: #333;
+  --selected-bg: #003a8c;
+}
+
+.dark .bibtex-textarea {
+  background-color: #2a2a2a;
+  color: #eee;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .bib-editor-content {
+    flex-direction: column;
+  }
+  
+  .bib-input-area {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .entry-list {
+    width: 100%;
+    max-height: 200px;
+  }
+}

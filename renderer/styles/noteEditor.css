@@ -1,0 +1,136 @@
+/* styles/noteEditor.css */
+.note-editor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.editor-header h3 {
+  margin: 0;
+}
+
+.editor-container {
+  display: flex;
+  gap: 20px;
+  height: 400px;
+  margin-bottom: 16px;
+}
+
+.editor-pane, .preview-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.markdown-editor {
+  flex: 1;
+  resize: none;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Consolas', monospace;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.markdown-preview {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  overflow-y: auto;
+}
+
+.editor-footer {
+  margin-top: 16px;
+}
+
+.markdown-help {
+  background-color: var(--secondary-background);
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.markdown-help h4 {
+  margin-bottom: 8px;
+}
+
+.markdown-help ul {
+  list-style-type: none;
+  padding-left: 16px;
+}
+
+.markdown-help li {
+  margin-bottom: 4px;
+}
+
+.markdown-help code {
+  background-color: var(--code-background);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: 'Consolas', monospace;
+  font-size: 0.85rem;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 1024px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .main-view {
+    height: 0;
+    flex: 1;
+  }
+  
+  .editor-container {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .editor-pane, .preview-pane {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .paper-header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .detail-item {
+    flex-direction: column;
+  }
+  
+  .detail-item .label {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+}

@@ -1,0 +1,36 @@
+appId: com.yourdomain.papermanager
+productName: 論文管理
+copyright: Copyright © 2023 Your Name
+
+directories:
+  output: dist
+  buildResources: assets
+
+files:
+  - main.js
+  - preload.js
+  - renderer/**/*
+  - services/**/*
+  - assets/**/*
+  - "!node_modules/**/*"
+
+mac:
+  category: public.app-category.education
+  icon: assets/icons/app-icon.icns
+  target:
+    - dmg
+    - zip
+
+win:
+  icon: assets/icons/app-icon.ico
+  target:
+    - nsis
+    - portable
+
+linux:
+  category: Education
+  icon: assets/icons/app-icon.png
+  target:
+    - AppImage
+    - deb
+    - tar.gz

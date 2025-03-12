@@ -1,0 +1,50 @@
+/* styles/pdfViewer.css */
+.pdf-viewer-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--card-background);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-style: italic;
+  color: var(--sidebar-text);
+}
+
+.pdf-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.pdf-viewer {
+  flex: 1;
+  overflow: auto;
+  background-color: var(--secondary-background);
+}
+
+.external-viewer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.open-external-button {
+  margin-top: 16px;
+}

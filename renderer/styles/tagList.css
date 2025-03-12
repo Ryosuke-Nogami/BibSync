@@ -1,0 +1,54 @@
+
+/* styles/tagList.css */
+.tag-list-container {
+  padding: 16px;
+}
+
+.tag-list-container h2 {
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+  color: var(--sidebar-text);
+}
+
+.tag-list {
+  list-style: none;
+  padding: 0;
+}
+
+.tag-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tag-item:hover {
+  background-color: var(--secondary-background);
+}
+
+.tag-item.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.tag-name {
+  flex: 1;
+}
+
+.tag-count {
+  background-color: var(--tag-background);
+  color: var(--tag-text);
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  min-width: 24px;
+  text-align: center;
+}
+
+.tag-item.active .tag-count {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
