@@ -110,6 +110,12 @@ ipcMain.handle('get-settings', () => {
 // 設定の更新
 ipcMain.handle('update-settings', (event, settings) => {
   store.set(settings);
+  // 設定変更をメインウィンドウに通知
+  mainWindow.webContents.send('settings-changed', settings);
+  // ダークモードの即時反映
+  if (settings.darkMode !== undefined) {
+    mainWindow.webContents.send('theme-changed', settings.darkMode);
+  }
   return store.store;
 });
 

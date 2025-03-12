@@ -50,6 +50,12 @@ contextBridge.exposeInMainWorld('paperAPI', {
   // 設定
   getSettings: () => ipcRenderer.invoke('get-settings'),
   updateSettings: (settings) => ipcRenderer.invoke('update-settings', settings),
+  onSettingsChanged: (callback) => {
+    ipcRenderer.on('settings-changed', (event, settings) => callback(settings));
+    return () => {
+      ipcRenderer.removeListener('settings-changed', callback);
+    };
+  },
   
   // 論文管理
   scanPapers: () => ipcRenderer.invoke('scan-papers'),

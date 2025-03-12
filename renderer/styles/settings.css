@@ -1,12 +1,78 @@
 /* styles/settings.css */
 .settings-container {
   padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .settings-container h2 {
-  margin-bottom: 20px;
-  font-size: 1.1rem;
-  color: var(--sidebar-text);
+  color: var(--text-color);
+  margin-bottom: 24px;
+  font-size: 24px;
+}
+
+.settings-section {
+  background: var(--card-background);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.settings-section h3 {
+  color: var(--text-color);
+  margin-bottom: 16px;
+  font-size: 18px;
+}
+
+.directory-setting {
+  margin-bottom: 16px;
+}
+
+.directory-setting label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.directory-input {
+  display: flex;
+  gap: 8px;
+}
+
+.directory-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--input-background);
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.directory-input button {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.directory-input button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.settings-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: var(--text-color);
+  font-size: 16px;
 }
 
 .form-group {

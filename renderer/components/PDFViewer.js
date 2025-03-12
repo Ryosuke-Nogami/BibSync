@@ -1,9 +1,10 @@
 // コンポーネント: PDFViewer.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { SettingsContext } from '../App';
 import '../styles/pdfViewer.css';
 
 const PDFViewer = ({ pdfPath, onOpenExternal }) => {
-  const [useExternalViewer, setUseExternalViewer] = useState(false);
+  const { settings } = useContext(SettingsContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pdfUrl, setPdfUrl] = useState(null);
@@ -13,7 +14,6 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
 
   // PDFの読み込み完了時のハンドラー
   const handleWebViewLoad = (event) => {
-    // webviewのloadイベントから、PDFが正常に読み込まれたかを確認
     const webview = event.target;
     if (webview && !webview.isLoadingMainFrame()) {
       setPdfLoaded(true);
@@ -35,7 +35,7 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
     setShowFallback(false);
   };
 
-  // 設定を取得して外部/内部ビューアーを決定
+  // PDFのロード
   useEffect(() => {
     if (!pdfPath) {
       setLoading(false);
@@ -49,25 +49,16 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
     setLoadError(false);
     setShowFallback(false);
 
-    // 設定を取得
-    window.paperAPI.getSettings()
-      .then(settings => {
-        setUseExternalViewer(settings.externalPdfViewer);
-        
-        // 外部ビューアーの場合はPDFを開く
-        if (settings.externalPdfViewer) {
-          return window.paperAPI.openPDF(pdfPath);
+    // PDFを開く
+    window.paperAPI.openPDF(pdfPath)
+      .then(result => {
+        if (result.success) {
+          if (!settings.externalPdfViewer) {
+            setPdfUrl(result.encodedPath);
+          }
         } else {
-          // 内部ビューアーの場合はエンコードされたパスを取得
-          return window.paperAPI.openPDF(pdfPath)
-            .then(result => {
-              if (result.success && !result.external) {
-                setPdfUrl(result.encodedPath);
-              } else if (!result.success) {
-                setError(result.error);
-                setShowFallback(true);
-              }
-            });
+          setError(result.error);
+          setShowFallback(true);
         }
       })
       .catch(err => {
@@ -78,20 +69,14 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, [pdfPath]);
+  }, [pdfPath, settings.externalPdfViewer]);
 
   // 外部ビューアーで開く
   const handleOpenExternal = () => {
     if (onOpenExternal) {
       onOpenExternal();
     } else if (pdfPath) {
-      window.paperAPI.getSettings()
-        .then(settings => {
-          const updatedSettings = { ...settings, externalPdfViewer: true };
-          return window.paperAPI.updateSettings(updatedSettings)
-            .then(() => window.paperAPI.openPDF(pdfPath))
-            .then(() => window.paperAPI.updateSettings(settings));
-        })
+      window.paperAPI.openPDF(pdfPath)
         .catch(err => {
           console.error('外部ビューアーでのPDF表示エラー:', err);
           setError('外部ビューアーでの表示に失敗しました');
@@ -123,7 +108,7 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
   }
 
   // 内部ビューアー（webview）でPDFを表示
-  if (!useExternalViewer && pdfPath) {
+  if (!settings.externalPdfViewer && pdfPath) {
     if (!pdfUrl) {
       return (
         <div className="pdf-viewer-container">

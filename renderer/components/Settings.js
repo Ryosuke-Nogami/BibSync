@@ -1,80 +1,85 @@
-
 // コンポーネント: Settings.js
-import React, { useState } from 'react';
+import React from 'react';
+import ToggleSwitch from './ToggleSwitch';
 import '../styles/settings.css';
 
 const Settings = ({ settings, onSettingsChange }) => {
-  const [formData, setFormData] = useState({
-    papersDirectory: settings.papersDirectory || '',
-    notesDirectory: settings.notesDirectory || '',
-    darkMode: settings.darkMode || false,
-    externalPdfViewer: settings.externalPdfViewer || false
-  });
-  
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
+  const handleToggleChange = (settingKey) => {
+    const updatedSettings = {
+      ...settings,
+      [settingKey]: !settings[settingKey]
+    };
+    onSettingsChange(updatedSettings);
   };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSettingsChange(formData);
+
+  const handleDirectoryChange = async (type) => {
+    try {
+      const result = await window.paperAPI.selectDirectory();
+      if (result.success) {
+        const updatedSettings = {
+          ...settings,
+          [`${type}Directory`]: result.path
+        };
+        onSettingsChange(updatedSettings);
+      }
+    } catch (error) {
+      console.error('ディレクトリ選択エラー:', error);
+    }
   };
-  
+
+  if (!settings) {
+    return <div className="settings-loading">設定を読み込んでいます...</div>;
+  }
+
   return (
     <div className="settings-container">
-      <h2>アプリケーション設定</h2>
+      <h2>設定</h2>
       
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="papersDirectory">論文フォルダ:</label>
-          <input
-            type="text"
-            id="papersDirectory"
-            name="papersDirectory"
-            value={formData.papersDirectory}
-            onChange={handleChange}
-          />
+      <section className="settings-section">
+        <h3>アプリケーション設定</h3>
+        <ToggleSwitch
+          id="darkMode"
+          checked={settings.darkMode}
+          onChange={() => handleToggleChange('darkMode')}
+          label="ダークモード"
+        />
+        <ToggleSwitch
+          id="externalPdfViewer"
+          checked={settings.externalPdfViewer}
+          onChange={() => handleToggleChange('externalPdfViewer')}
+          label="外部PDFビューアーを使用"
+        />
+      </section>
+
+      <section className="settings-section">
+        <h3>ディレクトリ設定</h3>
+        <div className="directory-setting">
+          <label>論文ディレクトリ</label>
+          <div className="directory-input">
+            <input
+              type="text"
+              value={settings.papersDirectory}
+              readOnly
+            />
+            <button onClick={() => handleDirectoryChange('papers')}>
+              変更
+            </button>
+          </div>
         </div>
-        
-        <div className="form-group">
-          <label htmlFor="notesDirectory">メモフォルダ:</label>
-          <input
-            type="text"
-            id="notesDirectory"
-            name="notesDirectory"
-            value={formData.notesDirectory}
-            onChange={handleChange}
-          />
+        <div className="directory-setting">
+          <label>ノートディレクトリ</label>
+          <div className="directory-input">
+            <input
+              type="text"
+              value={settings.notesDirectory}
+              readOnly
+            />
+            <button onClick={() => handleDirectoryChange('notes')}>
+              変更
+            </button>
+          </div>
         </div>
-        
-        <div className="form-group checkbox">
-          <input
-            type="checkbox"
-            id="darkMode"
-            name="darkMode"
-            checked={formData.darkMode}
-            onChange={handleChange}
-          />
-          <label htmlFor="darkMode">ダークモード</label>
-        </div>
-        
-        <div className="form-group checkbox">
-          <input
-            type="checkbox"
-            id="externalPdfViewer"
-            name="externalPdfViewer"
-            checked={formData.externalPdfViewer}
-            onChange={handleChange}
-          />
-          <label htmlFor="externalPdfViewer">外部 PDF ビューアーを使用</label>
-        </div>
-        
-        <button type="submit" className="save-button">設定を保存</button>
-      </form>
+      </section>
     </div>
   );
 };

@@ -2,7 +2,18 @@
 import React from 'react';
 import '../styles/tagList.css';
 
-const TagList = ({ tags, activeTag, onTagSelect }) => {
+const TagList = ({ tags = [], selectedTag, onTagSelect }) => {
+  if (!Array.isArray(tags)) {
+    return (
+      <div className="tag-list-container">
+        <h2>タグ一覧</h2>
+        <div className="empty-list">
+          <p>タグの読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="tag-list-container">
       <h2>タグ一覧</h2>
@@ -15,21 +26,21 @@ const TagList = ({ tags, activeTag, onTagSelect }) => {
       ) : (
         <ul className="tag-list">
           <li 
-            className={`tag-item ${activeTag === null ? 'active' : ''}`}
+            className={`tag-item ${selectedTag === null ? 'active' : ''}`}
             onClick={() => onTagSelect(null)}
           >
             <span className="tag-name">すべて</span>
-            <span className="tag-count">{tags.reduce((sum, tag) => sum + tag.paper_count, 0)}</span>
+            <span className="tag-count">{tags.reduce((sum, tag) => sum + (tag.paper_count || 0), 0)}</span>
           </li>
           
           {tags.map(tag => (
             <li 
-              key={tag.id}
-              className={`tag-item ${activeTag === tag.name ? 'active' : ''}`}
+              key={tag.id || tag.name}
+              className={`tag-item ${selectedTag === tag.name ? 'active' : ''}`}
               onClick={() => onTagSelect(tag.name)}
             >
               <span className="tag-name">{tag.name}</span>
-              <span className="tag-count">{tag.paper_count}</span>
+              <span className="tag-count">{tag.paper_count || 0}</span>
             </li>
           ))}
         </ul>

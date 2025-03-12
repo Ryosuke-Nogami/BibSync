@@ -1,14 +1,16 @@
 // コンポーネント: MainView.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PaperDetails from './PaperDetails';
-import PDFViewer from './PDFViewer';
+import PdfViewer from './PdfViewer';
 import MetadataEditor from './MetadataEditor';
 import NoteEditor from './NoteEditor';
+import { SettingsContext } from '../App';
 import '../styles/mainView.css';
 
-const MainView = ({ paper, onMetadataUpdate, settings }) => {
+const MainView = ({ paper, onMetadataUpdate }) => {
   const [activeTab, setActiveTab] = useState('details');
   const [note, setNote] = useState('');
+  const { settings } = useContext(SettingsContext);
   
   // 論文が変更されたときにノートを読み込む
   useEffect(() => {
@@ -104,6 +106,14 @@ const MainView = ({ paper, onMetadataUpdate, settings }) => {
       </div>
     );
   }
+
+  if (!settings) {
+    return (
+      <div className="main-view-empty">
+        <p>設定を読み込んでいます...</p>
+      </div>
+    );
+  }
   
   return (
     <div className="main-view">
@@ -175,7 +185,7 @@ const MainView = ({ paper, onMetadataUpdate, settings }) => {
           />
         )}
         {activeTab === 'pdf' && (
-          <PDFViewer 
+          <PdfViewer 
             pdfPath={paper.path}
             useExternalViewer={settings.externalPdfViewer}
             onOpenExternal={handleOpenPDF}
