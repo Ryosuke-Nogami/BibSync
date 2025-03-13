@@ -23,6 +23,7 @@
   gap: 20px;
   height: 400px;
   margin-bottom: 16px;
+  flex: 1;
 }
 
 .editor-pane, .preview-pane {
@@ -53,38 +54,104 @@
   background-color: var(--background-color);
   color: var(--text-color);
   overflow-y: auto;
+  line-height: 1.6;
 }
 
-.editor-footer {
-  margin-top: 16px;
+/* Markdownプレビューのスタイル */
+.markdown-preview h1 {
+  font-size: 1.8rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.markdown-help {
-  background-color: var(--secondary-background);
-  padding: 12px;
-  border-radius: 4px;
-  font-size: 0.9rem;
+.markdown-preview h2 {
+  font-size: 1.5rem;
+  margin-top: 1.3rem;
+  margin-bottom: 0.8rem;
 }
 
-.markdown-help h4 {
-  margin-bottom: 8px;
+.markdown-preview h3 {
+  font-size: 1.3rem;
+  margin-top: 1.1rem;
+  margin-bottom: 0.7rem;
 }
 
-.markdown-help ul {
-  list-style-type: none;
-  padding-left: 16px;
+.markdown-preview h4 {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.6rem;
 }
 
-.markdown-help li {
-  margin-bottom: 4px;
+.markdown-preview p {
+  margin-bottom: 1rem;
 }
 
-.markdown-help code {
+.markdown-preview ul, .markdown-preview ol {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+.markdown-preview li {
+  margin-bottom: 0.3rem;
+}
+
+.markdown-preview code {
   background-color: var(--code-background);
   padding: 2px 4px;
   border-radius: 3px;
   font-family: 'Consolas', monospace;
   font-size: 0.85rem;
+}
+
+.markdown-preview pre {
+  background-color: var(--code-background);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.markdown-preview pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.markdown-preview blockquote {
+  border-left: 4px solid var(--border-color);
+  padding-left: 1rem;
+  margin-left: 0;
+  color: var(--text-secondary);
+}
+
+.markdown-preview a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.markdown-preview a:hover {
+  text-decoration: underline;
+}
+
+.markdown-preview img {
+  max-width: 100%;
+  height: auto;
+}
+
+.markdown-preview table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.markdown-preview th, .markdown-preview td {
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+}
+
+.markdown-preview th {
+  background-color: var(--secondary-background);
 }
 
 /* レスポンシブデザイン */
