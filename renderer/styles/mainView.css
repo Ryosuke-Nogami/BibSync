@@ -1,7 +1,7 @@
-/* styles/mainView.css */
+/* styles/mainView.css - GitHub風に更新 */
 .main-view {
   flex: 1;
-  padding: 20px;
+  padding: 24px;
   overflow-y: auto;
   background-color: var(--primary-background);
   transition: width var(--transition-speed);
@@ -21,37 +21,41 @@
 }
 
 .paper-header {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
 }
 
 .paper-header h1 {
   margin: 0 0 10px 0;
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: var(--primary-text);
   word-break: break-word;
+  font-weight: 600;
 }
 
 .paper-authors {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: var(--secondary-text);
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .paper-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 10px;
+  gap: 6px;
+  margin-bottom: 12px;
 }
 
 .tag {
   background-color: var(--tag-background);
   color: var(--tag-text);
-  padding: 3px 8px;
+  padding: 3px 10px;
   border-radius: 12px;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .tabs {
@@ -61,14 +65,15 @@
 }
 
 .tab {
-  padding: 10px 15px;
+  padding: 10px 16px;
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
   cursor: pointer;
   color: var(--secondary-text);
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: all 0.2s;
+  margin-right: 8px;
 }
 
 .tab:hover {
@@ -77,12 +82,13 @@
 }
 
 .tab.active {
-  color: var(--accent-color);
-  border-bottom: 2px solid var(--accent-color);
+  color: var(--primary-text);
+  border-bottom: 2px solid var(--primary-color);
+  font-weight: 600;
 }
 
 .tab-content {
-  padding: 10px 0;
+  padding: 16px 0;
 }
 
 /* PDFビューアーが開いているときのスタイル */
@@ -90,14 +96,31 @@
   width: calc(100% - var(--pdf-viewer-width));
 }
 
+/* PDFビューボタン */
+.pdf-view-button {
+  margin-left: auto;
+  padding: 6px 12px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.pdf-view-button:hover {
+  background-color: var(--primary-hover);
+}
+
 /* レスポンシブデザイン */
 @media (max-width: 768px) {
   .main-view {
-    padding: 15px;
+    padding: 16px;
   }
   
   .paper-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
   
   .tab {

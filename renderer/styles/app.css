@@ -1,28 +1,28 @@
-/* デフォルトのテーマ（ライトモード） */
+/* GitHub Light風のテーマ（ライトモード） */
 :root {
   --background-color: #ffffff;
-  --text-color: #333333;
-  --sidebar-background: #f4f4f4;
-  --sidebar-text: #444444;
-  --border-color: #dddddd;
-  --primary-color: #1976d2;
-  --primary-hover: #1565c0;
-  --secondary-background: #eef2f7;
+  --text-color: #24292e;
+  --sidebar-background: #f6f8fa;
+  --sidebar-text: #24292e;
+  --border-color: #e1e4e8;
+  --primary-color: #0366d6;
+  --primary-hover: #005cc5;
+  --secondary-background: #f6f8fa;
   --card-background: #ffffff;
-  --tag-background: #e0e0e0;
-  --tag-text: #555555;
-  --scrollbar-track: #f1f1f1;
-  --scrollbar-thumb: #c1c1c1;
-  --menu-hover: #f0f0f0;
-  --code-background: #f5f5f5;
+  --tag-background: #eaf5ff;
+  --tag-text: #0366d6;
+  --scrollbar-track: #f6f8fa;
+  --scrollbar-thumb: #d1d5da;
+  --menu-hover: #f1f2f3;
+  --code-background: #f6f8fa;
   --primary-background: #ffffff;
-  --secondary-background: #f5f5f5;
-  --primary-text: #333333;
-  --secondary-text: #666666;
-  --accent-color: #4a90e2;
-  --hover-color: #e8e8e8;
+  --secondary-background: #f6f8fa;
+  --primary-text: #24292e;
+  --secondary-text: #586069;
+  --accent-color: #0366d6;
+  --hover-color: #f1f2f3;
   --sidebar-width: 300px;
-  --sidebar-hover: #34495e;
+  --sidebar-hover: #e1e4e8;
   --header-height: 50px;
   --pdf-viewer-width: 50%;
   --transition-speed: 0.3s;
@@ -34,7 +34,7 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 
 /* ヘッダーコンテナ */
@@ -46,7 +46,7 @@
   color: var(--sidebar-text);
   height: var(--header-height);
   padding: 0 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075);
   z-index: 10;
 }
 
@@ -236,7 +236,7 @@
 }
 
 .pdf-view-button:hover {
-  background-color: #3a7bc8;
+  background-color: var(--primary-hover);
 }
 
 /* レスポンシブデザイン */
@@ -255,30 +255,30 @@
   }
 }
 
-/* ダークモード */
+/* Cursor Dark Midnight風のダークモード */
 .dark {
-  --background-color: #121212;
-  --text-color: #e0e0e0;
-  --sidebar-background: #252526;
-  --sidebar-text: #e0e0e0;
-  --border-color: #333333;
-  --primary-color: #90caf9;
-  --primary-hover: #42a5f5;
-  --secondary-background: #252526;
-  --card-background: #1e1e1e;
-  --tag-background: #444444;
-  --tag-text: #e0e0e0;
-  --scrollbar-track: #333333;
-  --scrollbar-thumb: #666666;
-  --menu-hover: #333333;
-  --code-background: #2d2d2d;
-  --primary-background: #1e1e1e;
-  --secondary-background: #252526;
-  --primary-text: #e0e0e0;
-  --secondary-text: #a0a0a0;
-  --accent-color: #569cd6;
-  --hover-color: #2a2a2a;
-  --sidebar-hover: #37373d;
+  --background-color: #0d1117;
+  --text-color: #c9d1d9;
+  --sidebar-background: #161b22;
+  --sidebar-text: #c9d1d9;
+  --border-color: #30363d;
+  --primary-color: #58a6ff;
+  --primary-hover: #79c0ff;
+  --secondary-background: #161b22;
+  --card-background: #0d1117;
+  --tag-background: #1f2937;
+  --tag-text: #79c0ff;
+  --scrollbar-track: #161b22;
+  --scrollbar-thumb: #30363d;
+  --menu-hover: #1f2937;
+  --code-background: #1f2937;
+  --primary-background: #0d1117;
+  --secondary-background: #161b22;
+  --primary-text: #c9d1d9;
+  --secondary-text: #8b949e;
+  --accent-color: #58a6ff;
+  --hover-color: #1f2937;
+  --sidebar-hover: #1f2937;
 }
 
 /* 共通のスクロールバースタイル */
@@ -316,7 +316,7 @@
 button {
   padding: 8px 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   background-color: var(--primary-color);
   color: white;
   cursor: pointer;
@@ -329,7 +329,7 @@ button:hover {
 }
 
 button:disabled {
-  background-color: #ccc;
+  background-color: #6e7681;
   cursor: not-allowed;
 }
 
@@ -339,8 +339,6 @@ body {
   padding: 0;
   background-color: var(--primary-background);
   color: var(--primary-text);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   overflow: hidden;
 }
-
-
