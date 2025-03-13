@@ -1,4 +1,4 @@
-/* styles/noteEditor.css */
+/* styles/noteEditor.css - GitHub風スタイル */
 .note-editor {
   height: 100%;
   display: flex;
@@ -16,28 +16,32 @@
 
 .editor-header h3 {
   margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-text);
 }
 
 .editor-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .mode-buttons {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   padding: 2px;
   background-color: var(--secondary-background);
   border-radius: 6px;
+  border: 1px solid var(--border-color);
 }
 
 .mode-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   background: none;
   border: none;
@@ -58,8 +62,9 @@
 }
 
 .save-button {
-  padding: 6px 12px;
-  font-size: 0.9rem;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .editor-container {
@@ -88,6 +93,10 @@
   overflow: hidden;
 }
 
+.editor-container.edit .preview-pane {
+  display: none;
+}
+
 /* プレビューモード */
 .editor-container.preview .preview-pane {
   flex: 1;
@@ -96,100 +105,119 @@
   overflow: hidden;
 }
 
+.editor-container.preview .editor-pane {
+  display: none;
+}
+
 .markdown-editor {
   flex: 1;
   resize: none;
-  padding: 12px;
+  padding: 16px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-family: 'Consolas', monospace;
+  border-radius: 6px;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   line-height: 1.6;
-  font-size: 0.9rem;
+  font-size: 14px;
+}
+
+.markdown-editor:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.2);
 }
 
 .markdown-preview {
   flex: 1;
-  padding: 12px;
+  padding: 16px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  border-radius: 6px;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
   overflow-y: auto;
   line-height: 1.6;
+  font-size: 14px;
 }
 
 /* Markdownプレビューのスタイル */
 .markdown-preview h1 {
-  font-size: 1.8rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 24px;
+  margin-top: 24px;
+  margin-bottom: 16px;
   padding-bottom: 0.3rem;
   border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
 }
 
 .markdown-preview h2 {
-  font-size: 1.5rem;
-  margin-top: 1.3rem;
-  margin-bottom: 0.8rem;
+  font-size: 20px;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
 }
 
 .markdown-preview h3 {
-  font-size: 1.3rem;
-  margin-top: 1.1rem;
-  margin-bottom: 0.7rem;
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .markdown-preview h4 {
-  font-size: 1.1rem;
-  margin-top: 1rem;
-  margin-bottom: 0.6rem;
+  font-size: 16px;
+  margin-top: 18px;
+  margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .markdown-preview p {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .markdown-preview ul, .markdown-preview ol {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   padding-left: 2rem;
 }
 
 .markdown-preview li {
-  margin-bottom: 0.3rem;
+  margin-bottom: 4px;
 }
 
 .markdown-preview code {
   background-color: var(--code-background);
-  padding: 2px 4px;
+  padding: 2px 6px;
   border-radius: 3px;
-  font-family: 'Consolas', monospace;
-  font-size: 0.85rem;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 85%;
 }
 
 .markdown-preview pre {
   background-color: var(--code-background);
-  padding: 1rem;
-  border-radius: 4px;
+  padding: 16px;
+  border-radius: 6px;
   overflow-x: auto;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color);
 }
 
 .markdown-preview pre code {
   background-color: transparent;
   padding: 0;
+  font-size: 85%;
+  line-height: 1.45;
 }
 
 .markdown-preview blockquote {
   border-left: 4px solid var(--border-color);
-  padding-left: 1rem;
+  padding: 0 16px;
   margin-left: 0;
-  color: var(--text-secondary);
+  margin-bottom: 16px;
+  color: var(--secondary-text);
 }
 
 .markdown-preview a {
-  color: var(--primary-color);
+  color: var(--accent-color);
   text-decoration: none;
 }
 
@@ -200,92 +228,41 @@
 .markdown-preview img {
   max-width: 100%;
   height: auto;
+  margin: 16px 0;
+  border-radius: 6px;
 }
 
 .markdown-preview table {
   border-collapse: collapse;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
+  display: block;
+  overflow-x: auto;
 }
 
 .markdown-preview th, .markdown-preview td {
   border: 1px solid var(--border-color);
-  padding: 0.5rem;
+  padding: 8px 12px;
 }
 
 .markdown-preview th {
   background-color: var(--secondary-background);
+  font-weight: 600;
 }
 
-/* レスポンシブデザイン */
-@media (max-width: 1024px) {
-  .app-layout {
-    flex-direction: column;
-  }
-  
-  .sidebar {
-    width: 100%;
-    height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-  }
-  
-  .main-view {
-    height: 0;
-    flex: 1;
-  }
-  
-  .editor-container {
-    flex-direction: column;
-    height: auto;
-  }
-  
-  .editor-pane, .preview-pane {
-    height: 300px;
-  }
+.markdown-preview tr:nth-child(even) {
+  background-color: var(--secondary-background);
 }
 
-@media (max-width: 768px) {
-  .tab {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-  }
-  
-  .paper-header h1 {
-    font-size: 1.3rem;
-  }
-  
-  .detail-item {
-    flex-direction: column;
-  }
-  
-  .detail-item .label {
-    width: 100%;
-    margin-bottom: 4px;
-  }
-
-  .editor-controls {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .mode-buttons {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .save-button {
-    width: 100%;
-  }
-}
-
+/* 保存状態表示 */
 .save-status {
-  font-size: 0.8rem;
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-size: 14px;
+  padding: 4px 10px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  font-weight: 500;
 }
 
 .save-status::before {
@@ -297,50 +274,91 @@
 }
 
 .save-status.saving {
-  color: var(--primary-color);
-  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--accent-color);
+  background-color: rgba(3, 102, 214, 0.1);
 }
 
 .save-status.saving::before {
-  background-color: var(--primary-color);
+  background-color: var(--accent-color);
   animation: pulse 1s infinite;
 }
 
 .save-status.saved {
-  color: var(--success-color, #52c41a);
-  background-color: rgba(82, 196, 26, 0.1);
+  color: #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
 }
 
 .save-status.saved::before {
-  background-color: var(--success-color, #52c41a);
+  background-color: #28a745;
 }
 
 .save-status.error {
-  color: var(--error-color, #f5222d);
-  background-color: rgba(245, 34, 45, 0.1);
+  color: #d73a49;
+  background-color: rgba(215, 58, 73, 0.1);
 }
 
 .save-status.error::before {
-  background-color: var(--error-color, #f5222d);
+  background-color: #d73a49;
 }
 
 .save-status.pending {
-  color: var(--warning-color, #faad14);
-  background-color: rgba(250, 173, 20, 0.1);
+  color: #f9c513;
+  background-color: rgba(249, 197, 19, 0.1);
 }
 
 .save-status.pending::before {
-  background-color: var(--warning-color, #faad14);
+  background-color: #f9c513;
 }
 
 @keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* ダークモード対応 */
+.dark .markdown-editor {
+  background-color: var(--code-background);
+  border-color: var(--border-color);
+}
+
+.dark .markdown-preview {
+  background-color: var(--primary-background);
+}
+
+.dark .markdown-preview code {
+  background-color: rgba(110, 118, 129, 0.4);
+  color: #c9d1d9;
+}
+
+.dark .markdown-preview pre {
+  background-color: var(--code-background);
+  border-color: var(--border-color);
+}
+
+.dark .markdown-preview pre code {
+  color: #c9d1d9;
+}
+
+.dark .markdown-preview table th {
+  background-color: var(--code-background);
+}
+
+.dark .save-status.saving {
+  background-color: rgba(88, 166, 255, 0.1);
+}
+
+.dark .save-status.saved {
+  background-color: rgba(56, 211, 87, 0.1);
+  color: #3fb950;
+}
+
+.dark .save-status.error {
+  background-color: rgba(248, 81, 73, 0.1);
+  color: #f85149;
+}
+
+.dark .save-status.pending {
+  background-color: rgba(210, 153, 34, 0.1);
+  color: #d29922;
 }

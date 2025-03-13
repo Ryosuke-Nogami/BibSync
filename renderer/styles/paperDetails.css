@@ -1,21 +1,23 @@
-/* styles/paperDetails.css */
+/* styles/paperDetails.css - GitHub風スタイル */
 .paper-details {
   padding: 0;
 }
 
 .detail-section {
   margin-bottom: 24px;
-  background-color: var(--card-background);
+  background-color: var(--primary-background);
   border-radius: 6px;
   padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 .detail-section h3 {
   margin-bottom: 16px;
-  font-size: 1.1rem;
+  font-size: 16px;
+  font-weight: 600;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 8px;
+  color: var(--primary-text);
 }
 
 .detail-item {
@@ -26,48 +28,89 @@
 
 .detail-item .label {
   width: 120px;
-  font-weight: 500;
-  color: var(--sidebar-text);
+  font-weight: 600;
+  color: var(--secondary-text);
+  font-size: 14px;
 }
 
 .detail-item .value {
   flex: 1;
+  color: var(--primary-text);
+  font-size: 14px;
 }
 
 .detail-item .path {
-  font-family: monospace;
-  font-size: 0.9rem;
-  background-color: var(--secondary-background);
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 13px;
+  background-color: var(--code-background);
+  padding: 6px 10px;
+  border-radius: 6px;
   word-break: break-all;
+  border: 1px solid var(--border-color);
+  color: var(--primary-text);
 }
 
 .detail-item .link {
-  color: var(--primary-color);
+  color: var(--accent-color);
   cursor: pointer;
+  text-decoration: none;
+}
+
+.detail-item .link:hover {
   text-decoration: underline;
 }
 
 .detail-item .tags {
   display: flex;
   flex-wrap: wrap;
+  gap: 6px;
+}
+
+.detail-item .tag {
+  background-color: var(--tag-background);
+  color: var(--tag-text);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .detail-actions {
   display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 24px;
 }
 
 .action-button {
   padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button:hover {
+  background-color: var(--hover-color);
 }
 
 .external-viewer-button {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.external-viewer-button:hover {
+  background-color: var(--primary-hover);
 }
 
 .external-viewer-button .external-icon {
@@ -76,4 +119,14 @@
 
 .external-viewer-button:hover .external-icon {
   transform: translate(2px, -2px);
+}
+
+/* ダークモード */
+.dark .detail-section {
+  border-color: var(--border-color);
+}
+
+.dark .detail-item .path {
+  background-color: var(--code-background);
+  border-color: var(--border-color);
 }

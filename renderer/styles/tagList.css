@@ -1,13 +1,13 @@
-
-/* styles/tagList.css */
+/* styles/tagList.css - GitHub風スタイル */
 .tag-list-container {
   padding: 16px;
 }
 
 .tag-list-container h2 {
   margin-bottom: 16px;
-  font-size: 1.1rem;
-  color: var(--sidebar-text);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-text);
 }
 
 .tag-list {
@@ -20,35 +20,69 @@
   justify-content: space-between;
   padding: 8px 12px;
   margin-bottom: 6px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
+  font-size: 14px;
+  color: var(--primary-text);
 }
 
 .tag-item:hover {
-  background-color: var(--secondary-background);
+  background-color: var(--hover-color);
 }
 
 .tag-item.active {
-  background-color: var(--primary-color);
+  background-color: var(--accent-color);
   color: white;
 }
 
 .tag-name {
   flex: 1;
+  font-weight: 500;
 }
 
 .tag-count {
   background-color: var(--tag-background);
   color: var(--tag-text);
-  padding: 2px 6px;
+  padding: 0 8px;
   border-radius: 10px;
-  font-size: 0.8rem;
+  font-size: 12px;
   min-width: 24px;
   text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  font-weight: 500;
 }
 
 .tag-item.active .tag-count {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.3);
   color: white;
+}
+
+.empty-list {
+  padding: 16px 0;
+  text-align: center;
+  color: var(--secondary-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.empty-list p {
+  margin: 8px 0;
+}
+
+/* ダークモード */
+.dark .tag-item:hover {
+  background-color: var(--hover-color);
+}
+
+.dark .tag-item.active {
+  background-color: var(--accent-color);
+}
+
+.dark .tag-count {
+  background-color: var(--tag-background);
+  color: var(--tag-text);
 }

@@ -1,5 +1,4 @@
-
-/* styles/paperList.css */
+/* styles/paperList.css - GitHub風スタイル */
 .paper-list-container {
   height: 100%;
   display: flex;
@@ -12,17 +11,34 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--border-color);
+  background-color: var(--sidebar-background);
 }
 
 .paper-list-header h2 {
   margin: 0;
-  font-size: 1.1rem;
-  color: var(--sidebar-text);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary-text);
 }
 
 .scan-button {
   padding: 6px 12px;
-  font-size: 0.8rem;
+  font-size: 13px;
+  background-color: var(--secondary-background);
+  color: var(--primary-text);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scan-button:hover {
+  background-color: var(--hover-color);
+}
+
+.scan-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .paper-list {
@@ -40,28 +56,75 @@
 }
 
 .paper-item:hover {
-  background-color: var(--secondary-background);
+  background-color: var(--hover-color);
+}
+
+.paper-item.selected {
+  background-color: rgba(3, 102, 214, 0.1);
 }
 
 .paper-title {
-  font-weight: 500;
-  margin-bottom: 4px;
-  color: var(--text-color);
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--primary-text);
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .paper-authors {
-  font-size: 0.9rem;
-  color: var(--sidebar-text);
-  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--secondary-text);
+  margin-bottom: 8px;
+  line-height: 1.3;
 }
 
 .paper-tags {
   display: flex;
   flex-wrap: wrap;
+  gap: 4px;
 }
 
 .paper-tags .tag {
-  margin-right: 6px;
-  margin-bottom: 4px;
-  font-size: 0.75rem;
+  margin: 0;
+  padding: 2px 8px;
+  font-size: 12px;
+  background-color: var(--tag-background);
+  color: var(--tag-text);
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: var(--secondary-text);
+  font-size: 14px;
+}
+
+.empty-list {
+  padding: 20px;
+  text-align: center;
+  color: var(--secondary-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.empty-list p {
+  margin: 8px 0;
+}
+
+/* ダークモード */
+.dark .paper-item:hover {
+  background-color: var(--hover-color);
+}
+
+.dark .paper-item.selected {
+  background-color: rgba(88, 166, 255, 0.15);
+}
+
+.dark .paper-tags .tag {
+  background-color: var(--tag-background);
+  color: var(--tag-text);
 }

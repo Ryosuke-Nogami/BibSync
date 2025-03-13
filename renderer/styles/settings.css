@@ -1,4 +1,4 @@
-/* styles/settings.css */
+/* styles/settings.css - GitHub風スタイル */
 .settings-container {
   padding: 20px;
   max-width: 800px;
@@ -6,23 +6,27 @@
 }
 
 .settings-container h2 {
-  color: var(--text-color);
+  color: var(--primary-text);
   margin-bottom: 24px;
   font-size: 24px;
+  font-weight: 600;
 }
 
 .settings-section {
-  background: var(--card-background);
-  border-radius: 8px;
-  padding: 20px;
+  background: var(--primary-background);
+  border-radius: 6px;
+  padding: 16px 20px;
   margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 .settings-section h3 {
-  color: var(--text-color);
+  color: var(--primary-text);
   margin-bottom: 16px;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .directory-setting {
@@ -32,8 +36,9 @@
 .directory-setting label {
   display: block;
   margin-bottom: 8px;
-  color: var(--text-color);
+  color: var(--primary-text);
   font-size: 14px;
+  font-weight: 600;
 }
 
 .directory-input {
@@ -45,25 +50,27 @@
   flex: 1;
   padding: 8px 12px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background: var(--input-background);
-  color: var(--text-color);
+  border-radius: 6px;
+  background: var(--primary-background);
+  color: var(--primary-text);
   font-size: 14px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 }
 
 .directory-input button {
   padding: 8px 16px;
-  background-color: var(--primary-color);
+  background-color: var(--accent-color);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
   transition: background-color 0.2s;
 }
 
 .directory-input button:hover {
-  background-color: var(--primary-color-dark);
+  background-color: var(--primary-hover);
 }
 
 .settings-loading {
@@ -71,7 +78,7 @@
   justify-content: center;
   align-items: center;
   height: 200px;
-  color: var(--text-color);
+  color: var(--secondary-text);
   font-size: 16px;
 }
 
@@ -82,32 +89,76 @@
 .form-group label {
   display: block;
   margin-bottom: 6px;
-  color: var(--text-color);
+  color: var(--primary-text);
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .form-group input[type="text"] {
   width: 100%;
-  padding: 8px;
+  padding: 8px 12px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  border-radius: 6px;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  font-size: 14px;
+}
+
+.form-group input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.2);
 }
 
 .form-group.checkbox {
   display: flex;
   align-items: center;
+  margin-bottom: 12px;
 }
 
 .form-group.checkbox input {
-  margin-right: 8px;
+  margin-right: 10px;
 }
 
 .form-group.checkbox label {
   margin-bottom: 0;
+  font-weight: normal;
 }
 
 .save-button {
   margin-top: 10px;
   padding: 8px 16px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.save-button:hover {
+  background-color: var(--primary-hover);
+}
+
+/* toggle switch は含まないようにする（別ファイルで定義） */
+
+/* ダークモード */
+.dark .settings-section {
+  background-color: var(--primary-background);
+  border-color: var(--border-color);
+}
+
+.dark .directory-input input {
+  background-color: var(--code-background);
+  border-color: var(--border-color);
+}
+
+.dark .form-group input[type="text"] {
+  background-color: var(--code-background);
+  border-color: var(--border-color);
+}
+
+.dark .form-group input[type="text"]:focus {
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
 }
