@@ -63,3 +63,17 @@
 .action-button {
   padding: 8px 16px;
 }
+
+.external-viewer-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.external-viewer-button .external-icon {
+  transition: transform 0.2s ease;
+}
+
+.external-viewer-button:hover .external-icon {
+  transform: translate(2px, -2px);
+}

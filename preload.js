@@ -61,6 +61,7 @@ contextBridge.exposeInMainWorld('paperAPI', {
   // 論文管理
   scanPapers: () => ipcRenderer.invoke('scan-papers'),
   openPDF: (pdfPath) => ipcRenderer.invoke('open-pdf', pdfPath),
+  openPDFExternal: (pdfPath) => ipcRenderer.invoke('open-pdf-external', pdfPath),
   
   // メタデータ
   saveMetadata: (data) => ipcRenderer.invoke('save-metadata', data),

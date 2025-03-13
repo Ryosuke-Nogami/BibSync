@@ -92,7 +92,7 @@ const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer 
     if (!paper) return;
     
     try {
-      await window.paperAPI.openPDF(paper.path);
+      await window.paperAPI.openPDFExternal(paper.path);
     } catch (error) {
       console.error('PDF を開くエラー:', error);
     }
