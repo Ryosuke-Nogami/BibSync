@@ -15,6 +15,17 @@
   --scrollbar-thumb: #c1c1c1;
   --menu-hover: #f0f0f0;
   --code-background: #f5f5f5;
+  --primary-background: #ffffff;
+  --secondary-background: #f5f5f5;
+  --primary-text: #333333;
+  --secondary-text: #666666;
+  --accent-color: #4a90e2;
+  --hover-color: #e8e8e8;
+  --sidebar-width: 300px;
+  --sidebar-hover: #34495e;
+  --header-height: 50px;
+  --pdf-viewer-width: 50%;
+  --transition-speed: 0.3s;
 }
 
 .app-container {
@@ -29,22 +40,26 @@
 /* ヘッダーコンテナ */
 .header-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
   background-color: var(--sidebar-background);
-  color: var(--text-color);
-  height: 48px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: var(--sidebar-text);
+  height: var(--header-height);
+  padding: 0 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  border-bottom: 1px solid var(--border-color);
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
 }
 
 .app-title-header {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 500;
-  margin-left: 16px;
-  color: var(--sidebar-text);
+  margin-left: 10px;
 }
 
 /* コンテンツコンテナ */
@@ -52,101 +67,204 @@
   display: flex;
   flex: 1;
   overflow: hidden;
-  position: relative;
 }
 
 /* サイドバーが閉じている時のコンテナスタイル */
 .app-container.sidebar-collapsed .sidebar {
+  transform: translateX(-100%);
   width: 0;
 }
 
 /* サイドバートグルボタン */
-.sidebar-toggle-button {
-  width: 32px;
-  height: 32px;
-  background-color: transparent;
+.sidebar-toggle-button, .pdf-toggle-button {
+  background: none;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  transition: background-color 0.2s;
+  width: 30px;
+  height: 30px;
   border-radius: 4px;
+  padding: 0;
+  margin: 0 5px;
 }
 
-.sidebar-toggle-button:hover {
+.sidebar-toggle-button:hover, .pdf-toggle-button:hover {
   background-color: var(--secondary-background);
 }
 
 /* トグルアイコン */
 .toggle-icon {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .toggle-icon-part {
-  width: 18px;
-  height: 18px;
-  position: relative;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   border: 2px solid var(--sidebar-text);
+  box-sizing: border-box;
   border-radius: 2px;
-  transition: all 0.3s ease;
 }
 
 .toggle-icon-part::before {
   content: '';
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
   width: 50%;
+  height: 100%;
   background-color: var(--sidebar-text);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-speed);
+}
+
+.toggle-icon-part.open::before {
+  transform: translateX(0);
 }
 
 .toggle-icon-part.closed::before {
+  transform: translateX(100%);
+}
+
+/* PDFビューアーパネル */
+.pdf-viewer-panel {
+  position: relative;
+  width: var(--pdf-viewer-width);
+  height: 100%;
+  background-color: var(--primary-background);
+  border-left: 1px solid var(--border-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width var(--transition-speed);
+}
+
+.pdf-viewer-panel.closed {
+  transform: translateX(100%);
   width: 0;
 }
 
-.app-layout {
+.pdf-viewer-panel.open {
+  transform: translateX(0);
+}
+
+/* PDFビューアーコントロール */
+.pdf-viewer-controls {
   display: flex;
+  justify-content: flex-end;
+  padding: 5px 10px;
+  background-color: var(--secondary-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.size-button {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--primary-text);
+  padding: 3px 8px;
+  margin-left: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.size-button:hover {
+  background-color: var(--hover-color);
+}
+
+.size-button.active {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+/* PDFビューアーが開いているときのメインビューのスタイル */
+.app-container.pdf-viewer-open .main-view {
+  width: calc(100% - var(--sidebar-width) - var(--pdf-viewer-width));
+}
+
+.app-container.sidebar-collapsed.pdf-viewer-open .main-view {
+  width: calc(100% - var(--pdf-viewer-width));
+}
+
+.app-container.pdf-viewer-closed .main-view {
+  width: calc(100% - var(--sidebar-width));
+}
+
+.app-container.sidebar-collapsed.pdf-viewer-closed .main-view {
   width: 100%;
-  height: 100%;
+}
+
+/* サイドバーが閉じられているときのスタイル */
+.app-container.sidebar-collapsed .sidebar {
+  transform: translateX(-100%);
+  width: 0;
+}
+
+/* PDFビューアーボタン */
+.pdf-toggle-button {
+  opacity: 0.7;
+}
+
+.pdf-toggle-button:hover {
+  opacity: 1;
+}
+
+.pdf-toggle-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pdf-toggle-button:disabled:hover {
+  background: none;
+}
+
+/* PDFビューボタン（MainView内） */
+.pdf-view-button {
+  margin-left: auto;
+  padding: 5px 10px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.pdf-view-button:hover {
+  background-color: #3a7bc8;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 250px;
+    --pdf-viewer-width: 100%;
+  }
+  
+  .app-container.pdf-viewer-open .main-view {
+    display: none;
+  }
+  
+  .app-container.sidebar-collapsed.pdf-viewer-open .main-view {
+    display: none;
+  }
 }
 
 /* ダークモード */
-.light {
-  --background-color: #ffffff;
-  --text-color: #333333;
-  --sidebar-background: #f4f4f4;
-  --sidebar-text: #444444;
-  --border-color: #dddddd;
-  --primary-color: #1976d2;
-  --primary-hover: #1565c0;
-  --secondary-background: #eef2f7;
-  --card-background: #ffffff;
-  --tag-background: #e0e0e0;
-  --tag-text: #555555;
-  --scrollbar-track: #f1f1f1;
-  --scrollbar-thumb: #c1c1c1;
-  --menu-hover: #f0f0f0;
-  --code-background: #f5f5f5;
-}
-
 .dark {
   --background-color: #121212;
   --text-color: #e0e0e0;
-  --sidebar-background: #1e1e1e;
-  --sidebar-text: #b0b0b0;
+  --sidebar-background: #252526;
+  --sidebar-text: #e0e0e0;
   --border-color: #333333;
   --primary-color: #90caf9;
   --primary-hover: #42a5f5;
-  --secondary-background: #252525;
+  --secondary-background: #252526;
   --card-background: #1e1e1e;
   --tag-background: #444444;
   --tag-text: #e0e0e0;
@@ -154,6 +272,13 @@
   --scrollbar-thumb: #666666;
   --menu-hover: #333333;
   --code-background: #2d2d2d;
+  --primary-background: #1e1e1e;
+  --secondary-background: #252526;
+  --primary-text: #e0e0e0;
+  --secondary-text: #a0a0a0;
+  --accent-color: #569cd6;
+  --hover-color: #2a2a2a;
+  --sidebar-hover: #37373d;
 }
 
 /* 共通のスクロールバースタイル */
@@ -212,9 +337,10 @@ button:disabled {
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
 }
 
 

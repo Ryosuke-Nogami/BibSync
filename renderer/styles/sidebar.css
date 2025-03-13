@@ -1,13 +1,14 @@
 /* styles/sidebar.css */
 .sidebar {
-  width: 300px;
+  width: var(--sidebar-width);
   height: 100%;
   background-color: var(--sidebar-background);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: width 0.3s ease;
+  transition: transform var(--transition-speed);
+  flex-shrink: 0;
 }
 
 /* サイドバーが閉じている状態 */

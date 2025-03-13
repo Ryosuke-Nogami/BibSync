@@ -2,10 +2,18 @@
 import React, { useState, useEffect, createContext } from 'react';
 import Sidebar from './components/Sidebar';
 import MainView from './components/MainView';
+import PdfViewer from './components/PdfViewer';
 import './styles/app.css';
 
 // 設定のコンテキストを作成
 export const SettingsContext = createContext(null);
+
+// PDFビューアーの幅のプリセット
+const PDF_WIDTH_PRESETS = {
+  SMALL: '30%',
+  MEDIUM: '50%',
+  LARGE: '70%'
+};
 
 const App = () => {
   const [papers, setPapers] = useState([]);
@@ -16,10 +24,23 @@ const App = () => {
   const [selectedTag, setSelectedTag] = useState(null);
   const [error, setError] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // サイドバーの開閉状態
+  const [isPdfViewerOpen, setIsPdfViewerOpen] = useState(false); // PDFビューアーの開閉状態
+  const [pdfViewerSize, setPdfViewerSize] = useState('MEDIUM'); // PDFビューアーのサイズ
 
   // サイドバーの開閉を切り替える関数
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  // PDFビューアーの開閉を切り替える関数
+  const togglePdfViewer = () => {
+    setIsPdfViewerOpen(!isPdfViewerOpen);
+  };
+
+  // PDFビューアーのサイズを変更する関数
+  const changePdfViewerSize = (size) => {
+    setPdfViewerSize(size);
+    document.documentElement.style.setProperty('--pdf-viewer-width', PDF_WIDTH_PRESETS[size]);
   };
 
   // 設定の初期化と監視
@@ -48,6 +69,10 @@ const App = () => {
       applySettings(newSettings);
     });
 
+    // 初期PDFビューアー幅の設定
+    document.documentElement.style.setProperty('--pdf-viewer-width', PDF_WIDTH_PRESETS[pdfViewerSize]);
+
+    // クリーンアップ関数
     return () => {
       if (unsubscribe) unsubscribe();
     };
@@ -120,18 +145,32 @@ const App = () => {
 
   return (
     <SettingsContext.Provider value={{ settings, setSettings }}>
-      <div className={`app-container ${isSidebarOpen ? '' : 'sidebar-collapsed'}`}>
+      <div className={`app-container ${isSidebarOpen ? '' : 'sidebar-collapsed'} ${isPdfViewerOpen ? 'pdf-viewer-open' : 'pdf-viewer-closed'}`}>
         <div className="header-container">
-          <button 
-            className="sidebar-toggle-button" 
-            onClick={toggleSidebar}
-            title={isSidebarOpen ? "サイドバーを閉じる" : "サイドバーを開く"}
-          >
-            <div className="toggle-icon">
-              <div className={`toggle-icon-part ${isSidebarOpen ? 'open' : 'closed'}`}></div>
-            </div>
-          </button>
-          <h1 className="app-title-header">論文管理アプリ</h1>
+          <div className="header-left">
+            <button 
+              className="sidebar-toggle-button" 
+              onClick={toggleSidebar}
+              title={isSidebarOpen ? "サイドバーを閉じる" : "サイドバーを開く"}
+            >
+              <div className="toggle-icon">
+                <div className={`toggle-icon-part ${isSidebarOpen ? 'open' : 'closed'}`}></div>
+              </div>
+            </button>
+            <h1 className="app-title-header">論文管理アプリ</h1>
+          </div>
+          <div className="header-right">
+            <button 
+              className="pdf-toggle-button" 
+              onClick={togglePdfViewer}
+              title={isPdfViewerOpen ? "PDFビューアーを閉じる" : "PDFビューアーを開く"}
+              disabled={!selectedPaper}
+            >
+              <div className="toggle-icon">
+                <div className={`toggle-icon-part ${isPdfViewerOpen ? 'open' : 'closed'}`}></div>
+              </div>
+            </button>
+          </div>
         </div>
         <div className="content-container">
           <Sidebar 
@@ -147,7 +186,47 @@ const App = () => {
           <MainView 
             paper={selectedPaper}
             onMetadataUpdate={handleMetadataUpdate}
+            isPdfViewerOpen={isPdfViewerOpen}
+            onTogglePdfViewer={togglePdfViewer}
           />
+          <div className={`pdf-viewer-panel ${isPdfViewerOpen ? 'open' : 'closed'}`}>
+            {isPdfViewerOpen && (
+              <div className="pdf-viewer-controls">
+                <button 
+                  className={`size-button ${pdfViewerSize === 'SMALL' ? 'active' : ''}`}
+                  onClick={() => changePdfViewerSize('SMALL')}
+                  title="小サイズ"
+                >
+                  小
+                </button>
+                <button 
+                  className={`size-button ${pdfViewerSize === 'MEDIUM' ? 'active' : ''}`}
+                  onClick={() => changePdfViewerSize('MEDIUM')}
+                  title="中サイズ"
+                >
+                  中
+                </button>
+                <button 
+                  className={`size-button ${pdfViewerSize === 'LARGE' ? 'active' : ''}`}
+                  onClick={() => changePdfViewerSize('LARGE')}
+                  title="大サイズ"
+                >
+                  大
+                </button>
+              </div>
+            )}
+            {selectedPaper && (
+              <PdfViewer 
+                pdfPath={selectedPaper.path}
+                useExternalViewer={settings.externalPdfViewer}
+                onOpenExternal={() => {
+                  if (selectedPaper) {
+                    window.paperAPI.openPDF(selectedPaper.path);
+                  }
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
     </SettingsContext.Provider>
