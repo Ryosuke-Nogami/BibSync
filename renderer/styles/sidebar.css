@@ -1,13 +1,20 @@
-
 /* styles/sidebar.css */
 .sidebar {
-  width: 350px;
+  width: 300px;
   height: 100%;
   background-color: var(--sidebar-background);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+/* サイドバーが閉じている状態 */
+.sidebar.closed {
+  width: 0;
+  overflow: hidden;
+  border-right: none;
 }
 
 .sidebar-header {
@@ -17,7 +24,7 @@
 
 .app-title {
   margin-bottom: 12px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--sidebar-text);
 }

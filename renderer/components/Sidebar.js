@@ -15,7 +15,8 @@ const Sidebar = ({
   onScanPapers,
   searchTerm,
   onSearchChange,
-  loading
+  loading,
+  isOpen
 }) => {
   const [activeTab, setActiveTab] = useState('papers');
   const { settings, setSettings } = useContext(SettingsContext);
@@ -30,9 +31,8 @@ const Sidebar = ({
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
       <div className="sidebar-header">
-        <h1 className="app-title">論文管理</h1>
         <div className="search-container">
           <input
             type="text"

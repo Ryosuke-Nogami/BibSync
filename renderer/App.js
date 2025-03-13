@@ -15,6 +15,12 @@ const App = () => {
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const [error, setError] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // サイドバーの開閉状態
+
+  // サイドバーの開閉を切り替える関数
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   // 設定の初期化と監視
   useEffect(() => {
@@ -114,20 +120,35 @@ const App = () => {
 
   return (
     <SettingsContext.Provider value={{ settings, setSettings }}>
-      <div className="app-container">
-        <Sidebar 
-          papers={papers}
-          onPaperSelect={setSelectedPaper}
-          selectedPaper={selectedPaper}
-          loading={loading}
-          tags={tags}
-          selectedTag={selectedTag}
-          onTagSelect={handleTagSelect}
-        />
-        <MainView 
-          paper={selectedPaper}
-          onMetadataUpdate={handleMetadataUpdate}
-        />
+      <div className={`app-container ${isSidebarOpen ? '' : 'sidebar-collapsed'}`}>
+        <div className="header-container">
+          <button 
+            className="sidebar-toggle-button" 
+            onClick={toggleSidebar}
+            title={isSidebarOpen ? "サイドバーを閉じる" : "サイドバーを開く"}
+          >
+            <div className="toggle-icon">
+              <div className={`toggle-icon-part ${isSidebarOpen ? 'open' : 'closed'}`}></div>
+            </div>
+          </button>
+          <h1 className="app-title-header">論文管理アプリ</h1>
+        </div>
+        <div className="content-container">
+          <Sidebar 
+            papers={papers}
+            onPaperSelect={setSelectedPaper}
+            selectedPaper={selectedPaper}
+            loading={loading}
+            tags={tags}
+            selectedTag={selectedTag}
+            onTagSelect={handleTagSelect}
+            isOpen={isSidebarOpen}
+          />
+          <MainView 
+            paper={selectedPaper}
+            onMetadataUpdate={handleMetadataUpdate}
+          />
+        </div>
       </div>
     </SettingsContext.Provider>
   );
