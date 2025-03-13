@@ -1,13 +1,12 @@
 // コンポーネント: MainView.js
 import React, { useState, useEffect, useContext } from 'react';
 import PaperDetails from './PaperDetails';
-import PdfViewer from './PdfViewer';
 import MetadataEditor from './MetadataEditor';
 import NoteEditor from './NoteEditor';
 import { SettingsContext } from '../App';
 import '../styles/mainView.css';
 
-const MainView = ({ paper, onMetadataUpdate }) => {
+const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer }) => {
   const [activeTab, setActiveTab] = useState('details');
   const [note, setNote] = useState('');
   const { settings } = useContext(SettingsContext);
@@ -99,6 +98,13 @@ const MainView = ({ paper, onMetadataUpdate }) => {
     }
   };
 
+  // PDFビューアーの開閉を切り替える
+  const handleTogglePdfViewer = () => {
+    if (onTogglePdfViewer) {
+      onTogglePdfViewer();
+    }
+  };
+
   if (!paper) {
     return (
       <div className="main-view-empty">
@@ -116,7 +122,7 @@ const MainView = ({ paper, onMetadataUpdate }) => {
   }
   
   return (
-    <div className="main-view">
+    <div className={`main-view ${isPdfViewerOpen ? 'pdf-viewer-open' : ''}`}>
       <div className="paper-header">
         <h1>{paper.metadata.title}</h1>
         <div className="paper-authors">
@@ -128,6 +134,12 @@ const MainView = ({ paper, onMetadataUpdate }) => {
             <span key={tag} className="tag">{tag}</span>
           ))}
         </div>
+        <button 
+          className="pdf-view-button"
+          onClick={handleTogglePdfViewer}
+        >
+          {isPdfViewerOpen ? 'PDFを閉じる' : 'PDFを表示'}
+        </button>
       </div>
       
       <div className="tabs">
@@ -142,18 +154,6 @@ const MainView = ({ paper, onMetadataUpdate }) => {
           }}
         >
           詳細
-        </button>
-        <button 
-          className={`tab ${activeTab === 'pdf' ? 'active' : ''}`}
-          onClick={() => {
-            // ノートタブから切り替える場合、保存を実行
-            if (activeTab === 'notes') {
-              handleNoteSave();
-            }
-            setActiveTab('pdf');
-          }}
-        >
-          PDF
         </button>
         <button 
           className={`tab ${activeTab === 'metadata' ? 'active' : ''}`}
@@ -182,13 +182,6 @@ const MainView = ({ paper, onMetadataUpdate }) => {
             onOpenPDF={handleOpenPDF}
             onOpenURL={handleOpenURL}
             onExportBibtex={handleExportBibtex}
-          />
-        )}
-        {activeTab === 'pdf' && (
-          <PdfViewer 
-            pdfPath={paper.path}
-            useExternalViewer={settings.externalPdfViewer}
-            onOpenExternal={handleOpenPDF}
           />
         )}
         {activeTab === 'metadata' && (

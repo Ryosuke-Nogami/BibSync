@@ -18,15 +18,78 @@
   margin: 0;
 }
 
+.editor-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 4px;
+  padding: 2px;
+  background-color: var(--secondary-background);
+  border-radius: 6px;
+}
+
+.mode-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: var(--secondary-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-button:hover {
+  background-color: var(--hover-color);
+  color: var(--primary-text);
+}
+
+.mode-button.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.save-button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
 .editor-container {
   display: flex;
   gap: 20px;
   height: 400px;
   margin-bottom: 16px;
   flex: 1;
+  transition: all 0.3s ease;
 }
 
-.editor-pane, .preview-pane {
+/* 分割表示モード */
+.editor-container.split .editor-pane,
+.editor-container.split .preview-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 編集モード */
+.editor-container.edit .editor-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* プレビューモード */
+.editor-container.preview .preview-pane {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -199,5 +262,85 @@
   .detail-item .label {
     width: 100%;
     margin-bottom: 4px;
+  }
+
+  .editor-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mode-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .save-button {
+    width: 100%;
+  }
+}
+
+.save-status {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.save-status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.save-status.saving {
+  color: var(--primary-color);
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.save-status.saving::before {
+  background-color: var(--primary-color);
+  animation: pulse 1s infinite;
+}
+
+.save-status.saved {
+  color: var(--success-color, #52c41a);
+  background-color: rgba(82, 196, 26, 0.1);
+}
+
+.save-status.saved::before {
+  background-color: var(--success-color, #52c41a);
+}
+
+.save-status.error {
+  color: var(--error-color, #f5222d);
+  background-color: rgba(245, 34, 45, 0.1);
+}
+
+.save-status.error::before {
+  background-color: var(--error-color, #f5222d);
+}
+
+.save-status.pending {
+  color: var(--warning-color, #faad14);
+  background-color: rgba(250, 173, 20, 0.1);
+}
+
+.save-status.pending::before {
+  background-color: var(--warning-color, #faad14);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }

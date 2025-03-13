@@ -5,15 +5,14 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--card-background);
-  border-radius: 6px;
+  background-color: var(--primary-background);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .pdf-internal-viewer {
   position: relative;
   z-index: 1;
+  height: 100%;
 }
 
 .pdf-viewer-placeholder {
@@ -22,7 +21,7 @@
   align-items: center;
   height: 100%;
   font-style: italic;
-  color: var(--sidebar-text);
+  color: var(--secondary-text);
   opacity: 0.5;
 }
 
@@ -35,6 +34,7 @@
   height: 100%;
   padding: 20px;
   text-align: center;
+  color: var(--secondary-text);
 }
 
 .pdf-iframe {
@@ -120,7 +120,7 @@
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
-  background-color: var(--primary-color);
+  background-color: var(--accent-color);
   color: white;
   cursor: pointer;
   font-size: 14px;
@@ -134,7 +134,7 @@
 .page-info {
   margin: 0 10px;
   font-size: 14px;
-  color: var(--text-color);
+  color: var(--primary-text);
 }
 
 .external-viewer {
@@ -149,17 +149,17 @@
 
 .external-viewer h3 {
   margin-bottom: 16px;
-  color: var(--text-color);
+  color: var(--primary-text);
 }
 
 .external-viewer p {
   margin-bottom: 8px;
-  color: var(--sidebar-text);
+  color: var(--secondary-text);
   max-width: 400px;
 }
 
 .open-external-button {
-  background-color: #007AFF;
+  background-color: var(--accent-color);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -178,4 +178,45 @@
   width: 100%;
   height: 100%;
   border: none;
+}
+
+/* PDFビューアーパネルのスタイル */
+.pdf-viewer-panel {
+  height: 100%;
+  overflow: hidden;
+}
+
+.pdf-viewer-panel.closed {
+  display: none;
+}
+
+/* ダークモード対応 */
+.dark .pdf-iframe {
+  background-color: #333;
+}
+
+.dark .pdf-fallback {
+  background: rgba(30, 30, 30, 0.95);
+  color: #e0e0e0;
+}
+
+.dark .close-fallback {
+  color: #aaa;
+}
+
+.dark .pdf-canvas {
+  background-color: #333;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .pdf-viewer-panel {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+  }
 }
