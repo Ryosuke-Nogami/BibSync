@@ -14,13 +14,26 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
+  const [error, setError] = useState(null);
 
   // 設定の初期化と監視
   useEffect(() => {
+    // window.paperAPIが存在するか確認
+    if (!window.paperAPI) {
+      console.error('window.paperAPIが見つかりません。preload.jsが正しく読み込まれていない可能性があります。');
+      setError('APIの初期化に失敗しました。');
+      setLoading(false);
+      return;
+    }
+
     // 初期設定の読み込み
     window.paperAPI.getSettings().then(initialSettings => {
       setSettings(initialSettings);
       applySettings(initialSettings);
+    }).catch(err => {
+      console.error('設定の読み込みエラー:', err);
+      setError('設定の読み込みに失敗しました。');
+      setLoading(false);
     });
 
     // 設定変更の監視
@@ -64,6 +77,8 @@ const App = () => {
 
   // 論文データの読み込み
   useEffect(() => {
+    if (!window.paperAPI) return;
+
     window.paperAPI.scanPapers()
       .then(papers => {
         setPapers(papers);
@@ -71,6 +86,7 @@ const App = () => {
       })
       .catch(error => {
         console.error('論文データの読み込みエラー:', error);
+        setError('論文データの読み込みに失敗しました。');
         setLoading(false);
       });
   }, []);
@@ -81,6 +97,15 @@ const App = () => {
       paper.id === paperId ? { ...paper, metadata } : paper
     ));
   };
+
+  // エラーが発生した場合
+  if (error) {
+    return <div className="error-container">
+      <h2>エラーが発生しました</h2>
+      <p>{error}</p>
+      <p>アプリケーションを再起動してください。</p>
+    </div>;
+  }
 
   // 初期設定が読み込まれるまで何も表示しない
   if (!settings) {

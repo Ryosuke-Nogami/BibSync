@@ -42,7 +42,8 @@ contextBridge.exposeInMainWorld('fs', {
 // PDF.js用のフラグ
 contextBridge.exposeInMainWorld('pdfjs', {
   isAvailable: true,
-  workerPath: require.resolve('pdfjs-dist/legacy/build/pdf.worker.js')
+  // ワーカーパスを相対パスで指定（distディレクトリ内）
+  workerPath: '../dist/pdf.worker.js'
 });
 
 // API をレンダラープロセスに公開
