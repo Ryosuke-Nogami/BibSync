@@ -65,7 +65,11 @@ contextBridge.exposeInMainWorld('paperAPI', {
   
   // メタデータ
   saveMetadata: (data) => ipcRenderer.invoke('save-metadata', data),
+  loadMetadata: (id) => ipcRenderer.invoke('load-metadata', id),
   fetchDOIMetadata: (doi) => ipcRenderer.invoke('fetch-doi-metadata', doi),
+  
+  // CrossRef APIを使用してメタデータを取得
+  fetchCrossRefMetadata: (doi) => ipcRenderer.invoke('fetch-crossref-metadata', doi),
   
   // ノート
   saveNote: (data) => ipcRenderer.invoke('save-note', data),

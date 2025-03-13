@@ -1,5 +1,5 @@
 // コンポーネント: PDFViewer.js
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { SettingsContext } from '../App';
 import '../styles/pdfViewer.css';
 
@@ -11,6 +11,7 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
   const [pdfLoaded, setPdfLoaded] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [showFallback, setShowFallback] = useState(false);
+  const webviewRef = useRef(null);
 
   // PDFの読み込み完了時のハンドラー
   const handleWebViewLoad = (event) => {
@@ -120,14 +121,13 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
     return (
       <div className="pdf-viewer-container">
         <webview
-          src={pdfUrl}
+          ref={webviewRef}
+            src={pdfUrl}
           className="pdf-webview"
           plugins="true"
           webpreferences="plugins,javascript=yes"
           preload="./preload.js"
           partition="persist:pdf"
-          onDidFinishLoad={handleWebViewLoad}
-          onDidFailLoad={handleWebViewError}
         />
         {showFallback && (
           <div className="pdf-fallback">

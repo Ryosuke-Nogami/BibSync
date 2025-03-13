@@ -104,7 +104,11 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
   // DOI から情報を取得
   const handleFetchDOI = () => {
     if (formData.doi) {
+      console.log('DOI取得リクエスト:', formData.doi);
+      showStatusMessage('DOIから情報を取得中...', 'info');
       onFetchDOI(formData.doi);
+    } else {
+      showStatusMessage('DOIを入力してください', 'error');
     }
   };
 

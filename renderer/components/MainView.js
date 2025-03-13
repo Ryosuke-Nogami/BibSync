@@ -52,20 +52,63 @@ const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer 
     }
   };
   
-  // DOI からメタデータを取得
+  // CrossRef APIを使用してDOIからメタデータを取得
   const handleFetchDOI = async (doi) => {
     if (!paper || !doi) return;
     
+    // DOIの形式を正規化
+    const normalizedDoi = doi.trim().replace(/^:/, '');
+    
+    console.log('MainView: DOI取得開始', normalizedDoi);
     try {
-      const result = await window.paperAPI.fetchDOIMetadata(doi);
-      if (result.success) {
-        onMetadataUpdate(paper.id, {
-          ...paper.metadata,
-          ...result.metadata
-        });
+      console.log('MainView: CrossRef API呼び出し');
+      const result = await window.paperAPI.fetchCrossRefMetadata(normalizedDoi);
+      console.log('MainView: CrossRef API結果', result);
+      
+      if (result.success && result.metadata) {
+        console.log('MainView: メタデータ更新');
+        
+        // CrossRefのデータ構造からメタデータを抽出
+        const crossRefData = result.metadata;
+        console.log('CrossRef データ構造:', crossRefData);
+        
+        // 更新するメタデータを作成
+        const updatedMetadata = {
+          ...paper.metadata,  // 既存のメタデータを保持
+          title: crossRefData.title?.[0] || paper.metadata.title,
+          doi: crossRefData.DOI || paper.metadata.doi,
+          year: crossRefData.published?.['date-parts']?.[0]?.[0]?.toString() || paper.metadata.year,
+          journal: crossRefData['container-title']?.[0] || paper.metadata.journal,
+          volume: crossRefData.volume || paper.metadata.volume,
+          pages: crossRefData.page || paper.metadata.pages,
+          authors: crossRefData.author ? 
+            crossRefData.author.map(author => 
+              `${author.given || ''} ${author.family || ''}`.trim()
+            ).filter(name => name) : 
+            paper.metadata.authors,
+          tags: paper.metadata.tags || []  // タグを保持
+        };
+        
+        console.log('更新されるメタデータ:', updatedMetadata);
+        
+        try {
+          // まずメタデータの更新を通知
+          handleMetadataChange(updatedMetadata);
+          
+          // その後、保存を試みる
+          await window.paperAPI.saveMetadata({
+            id: paper.id,
+            metadata: updatedMetadata
+          });
+          console.log('メタデータの保存に成功しました');
+        } catch (error) {
+          console.error('メタデータの保存に失敗しました:', error);
+        }
+      } else {
+        console.error('MainView: CrossRef API エラー:', result.error);
       }
     } catch (error) {
-      console.error('DOI 取得エラー:', error);
+      console.error('MainView: DOI 取得エラー:', error);
     }
   };
   

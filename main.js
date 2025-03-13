@@ -350,6 +350,29 @@ ipcMain.handle('fetch-doi-metadata', async (event, doi) => {
   }
 });
 
+// CrossRef APIを使用してDOIからメタデータを取得
+ipcMain.handle('fetch-crossref-metadata', async (event, doi) => {
+  console.log('CrossRef API呼び出し:', doi);
+  const url = `https://api.crossref.org/works/${doi}`;
+  console.log('CrossRef API URL:', url);
+  try {
+    console.log('CrossRef APIリクエスト開始');
+    const response = await fetch(url);
+    console.log('CrossRef APIレスポンス:', response.status, response.statusText);
+    if (response.ok) {
+      const data = await response.json();
+      console.log('CrossRef APIデータ取得成功');
+      return { success: true, metadata: data.message };
+    } else {
+      console.error('CrossRef APIエラー:', response.status, response.statusText);
+      return { success: false, error: `CrossRef API error: ${response.status}` };
+    }
+  } catch (error) {
+    console.error('CrossRef API例外:', error);
+    return { success: false, error: error.message };
+  }
+});
+
 // URL を外部ブラウザで開く
 ipcMain.on('open-external-url', (event, url) => {
   shell.openExternal(url);
@@ -358,4 +381,22 @@ ipcMain.on('open-external-url', (event, url) => {
 ipcMain.handle('get-resource-path', (event, relativePath) => {
   const appPath = path.dirname(app.getAppPath());
   return path.join(appPath, relativePath);
+});
+
+// メタデータの読み込み
+ipcMain.handle('load-metadata', async (event, id) => {
+  const papersDir = store.get('papersDirectory');
+  const metadataPath = path.join(papersDir, 'metadata', `${id}.json`);
+  
+  try {
+    if (fs.existsSync(metadataPath)) {
+      const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf-8'));
+      return { success: true, metadata };
+    } else {
+      return { success: true, metadata: null };
+    }
+  } catch (error) {
+    console.error('メタデータ読み込みエラー:', error);
+    return { success: false, error: error.message };
+  }
 });

@@ -110,23 +110,57 @@ const App = () => {
   useEffect(() => {
     if (!window.paperAPI) return;
 
-    window.paperAPI.scanPapers()
-      .then(papers => {
-        setPapers(papers);
+    const loadPapersAndMetadata = async () => {
+      try {
+        // 論文データの読み込み
+        const papers = await window.paperAPI.scanPapers();
+        
+        // 各論文のメタデータを読み込む
+        const papersWithMetadata = await Promise.all(
+          papers.map(async (paper) => {
+            const result = await window.paperAPI.loadMetadata(paper.id);
+            if (result.success && result.metadata) {
+              return { ...paper, metadata: result.metadata };
+            }
+            return paper;
+          })
+        );
+        
+        setPapers(papersWithMetadata);
         setLoading(false);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('論文データの読み込みエラー:', error);
         setError('論文データの読み込みに失敗しました。');
         setLoading(false);
-      });
+      }
+    };
+
+    loadPapersAndMetadata();
   }, []);
 
   // メタデータ更新のハンドラー
-  const handleMetadataUpdate = (paperId, metadata) => {
-    setPapers(papers.map(paper => 
-      paper.id === paperId ? { ...paper, metadata } : paper
-    ));
+  const handleMetadataUpdate = async (paperId, metadata) => {
+    try {
+      // データベースに保存
+      await window.paperAPI.saveMetadata({
+        id: paperId,
+        metadata: metadata
+      });
+      
+      // 状態を更新
+      const updatedPapers = papers.map(paper => 
+        paper.id === paperId ? { ...paper, metadata } : paper
+      );
+      setPapers(updatedPapers);
+      
+      // selectedPaperも更新
+      if (selectedPaper && selectedPaper.id === paperId) {
+        setSelectedPaper({ ...selectedPaper, metadata });
+      }
+    } catch (error) {
+      console.error('メタデータの保存エラー:', error);
+      setError('メタデータの保存に失敗しました。');
+    }
   };
 
   // エラーが発生した場合
