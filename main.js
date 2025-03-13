@@ -139,22 +139,8 @@ ipcMain.handle('open-pdf', async (event, pdfPath) => {
     const useExternalViewer = store.get('externalPdfViewer');
     
     if (useExternalViewer) {
-      // 外部ビューアーでPDFを開く
-      try {
-        console.log('外部ビューアーでPDFを開きます:', pdfPath);
-        const result = await shell.openPath(pdfPath);
-        
-        // 結果をチェック（macOSでは空文字列が返されると成功）
-        if (result === '') {
-          return { success: true, external: true };
-        } else {
-          console.error('外部ビューアーでのPDF表示エラー:', result);
-          return { success: false, error: result };
-        }
-      } catch (error) {
-        console.error('外部ビューアーでのPDF表示エラー:', error);
-        return { success: false, error: error.message };
-      }
+      // 外部ビューアーの場合は、パスの検証のみを行い、自動的には開かない
+      return { success: true, external: true };
     } else {
       // 内部ビューアーの場合、パスをURLエンコード
       const encodedPath = encodeURI(pdfPath).replace(/\\/g, '/');
@@ -163,6 +149,38 @@ ipcMain.handle('open-pdf', async (event, pdfPath) => {
         external: false,
         encodedPath: `file://${encodedPath}`
       };
+    }
+  } catch (error) {
+    console.error('PDF表示エラー:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// PDFを外部ビューアーで開く
+ipcMain.handle('open-pdf-external', async (event, pdfPath) => {
+  try {
+    console.log('PDFを外部ビューアーで開こうとしています:', pdfPath);
+    
+    // ファイルが存在するか確認
+    if (!fs.existsSync(pdfPath)) {
+      return { success: false, error: 'PDFファイルが見つかりません' };
+    }
+    
+    // 外部ビューアーでPDFを開く
+    try {
+      console.log('外部ビューアーでPDFを開きます:', pdfPath);
+      const result = await shell.openPath(pdfPath);
+      
+      // 結果をチェック（macOSでは空文字列が返されると成功）
+      if (result === '') {
+        return { success: true };
+      } else {
+        console.error('外部ビューアーでのPDF表示エラー:', result);
+        return { success: false, error: result };
+      }
+    } catch (error) {
+      console.error('外部ビューアーでのPDF表示エラー:', error);
+      return { success: false, error: error.message };
     }
   } catch (error) {
     console.error('PDF表示エラー:', error);
