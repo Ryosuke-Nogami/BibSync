@@ -7,7 +7,7 @@ import { SettingsContext } from '../App';
 import '../styles/mainView.css';
 
 const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer }) => {
-  const [activeTab, setActiveTab] = useState('details');
+  const [activeTab, setActiveTab] = useState('metadata');
   const [note, setNote] = useState('');
   const { settings } = useContext(SettingsContext);
   
@@ -202,18 +202,6 @@ const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer 
       
       <div className="tabs">
         <button 
-          className={`tab ${activeTab === 'details' ? 'active' : ''}`}
-          onClick={() => {
-            // ノートタブから切り替える場合、保存を実行
-            if (activeTab === 'notes') {
-              handleNoteSave();
-            }
-            setActiveTab('details');
-          }}
-        >
-          詳細
-        </button>
-        <button 
           className={`tab ${activeTab === 'metadata' ? 'active' : ''}`}
           onClick={() => {
             // ノートタブから切り替える場合、保存を実行
@@ -230,6 +218,18 @@ const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer 
           onClick={() => setActiveTab('notes')}
         >
           メモ
+        </button>
+        <button 
+          className={`tab ${activeTab === 'details' ? 'active' : ''}`}
+          onClick={() => {
+            // ノートタブから切り替える場合、保存を実行
+            if (activeTab === 'notes') {
+              handleNoteSave();
+            }
+            setActiveTab('details');
+          }}
+        >
+          詳細
         </button>
       </div>
       
