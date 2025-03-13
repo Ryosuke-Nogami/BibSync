@@ -41,11 +41,15 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
   // 入力フィールドの変更ハンドラ
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
+    const updatedFormData = {
       ...formData,
       [name]: value
-    });
+    };
+    setFormData(updatedFormData);
     setDataChanged(true);
+    
+    // 変更があった時点で自動保存
+    onChange(updatedFormData);
   };
   
   // 変更を保存
@@ -58,12 +62,16 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
   // 著者を追加
   const handleAddAuthor = () => {
     if (newAuthor.trim()) {
-      setFormData({
+      const updatedFormData = {
         ...formData,
         authors: [...formData.authors, newAuthor.trim()]
-      });
+      };
+      setFormData(updatedFormData);
       setNewAuthor('');
       setDataChanged(true);
+      
+      // 変更があった時点で自動保存
+      onChange(updatedFormData);
     }
   };
   
@@ -71,22 +79,30 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
   const handleRemoveAuthor = (index) => {
     const updatedAuthors = [...formData.authors];
     updatedAuthors.splice(index, 1);
-    setFormData({
+    const updatedFormData = {
       ...formData,
       authors: updatedAuthors
-    });
+    };
+    setFormData(updatedFormData);
     setDataChanged(true);
+    
+    // 変更があった時点で自動保存
+    onChange(updatedFormData);
   };
   
   // タグを追加
   const handleAddTag = () => {
     if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
-      setFormData({
+      const updatedFormData = {
         ...formData,
         tags: [...formData.tags, newTag.trim()]
-      });
+      };
+      setFormData(updatedFormData);
       setNewTag('');
       setDataChanged(true);
+      
+      // 変更があった時点で自動保存
+      onChange(updatedFormData);
     }
   };
   
@@ -94,11 +110,15 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
   const handleRemoveTag = (index) => {
     const updatedTags = [...formData.tags];
     updatedTags.splice(index, 1);
-    setFormData({
+    const updatedFormData = {
       ...formData,
       tags: updatedTags
-    });
+    };
+    setFormData(updatedFormData);
     setDataChanged(true);
+    
+    // 変更があった時点で自動保存
+    onChange(updatedFormData);
   };
   
   // DOI から情報を取得

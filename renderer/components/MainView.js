@@ -46,9 +46,24 @@ const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer 
   };
   
   // メタデータの更新
-  const handleMetadataChange = (updatedMetadata) => {
+  const handleMetadataChange = async (updatedMetadata) => {
     if (paper) {
+      // 親コンポーネントに更新を通知
       onMetadataUpdate(paper.id, updatedMetadata);
+      
+      // paper.metadataを更新
+      paper.metadata = updatedMetadata;
+      
+      // メタデータを自動保存
+      try {
+        await window.paperAPI.saveMetadata({
+          id: paper.id,
+          metadata: updatedMetadata
+        });
+        console.log('メタデータの自動保存に成功しました');
+      } catch (error) {
+        console.error('メタデータの自動保存に失敗しました:', error);
+      }
     }
   };
   
