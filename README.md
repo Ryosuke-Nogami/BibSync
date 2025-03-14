@@ -2,7 +2,7 @@
 
 BibSync（リポジトリ名：paper-manager）は、研究者や学生のための論文管理アプリケーションです。論文PDFとそのメタデータ、メモを一元管理し、効率的な研究活動をサポートします。
 
-![アプリケーションスクリーンショット](docs/screenshot.png)
+![アプリケーションスクリーンショット](docs/BibSyncScreenshot.png)
 
 ## 主な機能
 
