@@ -283,7 +283,7 @@ const App = () => {
                 <div className={`toggle-icon-part ${isSidebarOpen ? 'open' : 'closed'}`}></div>
               </div>
             </button>
-            <h1 className="app-title-header">論文管理アプリ</h1>
+            <h1 className="app-title-header">論文管理</h1>
           </div>
           <div className="header-right">
             <button 

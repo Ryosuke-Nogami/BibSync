@@ -12,7 +12,7 @@
     "prebuild": "npm run copy-pdfjs-worker",
     "prewebpack": "npm run copy-pdfjs-worker"
   },
-  "author": "Your Name",
+  "author": "Ryosuke Nogami",
   "license": "MIT",
   "dependencies": {
     "better-sqlite3": "^8.7.0",
@@ -44,7 +44,7 @@
   },
   "build": {
     "appId": "com.yourdomain.papermanager",
-    "productName": "論文管理",
+    "productName": "BibSync",
     "mac": {
       "category": "public.app-category.education",
       "icon": "assets/icons/app-icon.icns"
