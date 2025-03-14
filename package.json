@@ -9,9 +9,11 @@
     "dev": "webpack --watch & nodemon --watch main.js --watch preload.js --exec electron .",
     "webpack": "webpack",
     "copy-pdfjs-worker": "mkdir -p dist && cp node_modules/pdfjs-dist/legacy/build/pdf.worker.min.mjs dist/pdf.worker.js",
-    "prebuild": "npm run copy-pdfjs-worker && npm run check-icons",
+    "prebuild": "npm run copy-pdfjs-worker",
     "prewebpack": "npm run copy-pdfjs-worker",
-    "check-icons": "node -e \"const fs=require('fs');const path=require('path');['assets/icons/app-icon.ico','assets/icons/app-icon.icns','assets/icons/app-icon.png'].forEach(p=>{const exists=fs.existsSync(path.resolve(p));console.log(`${p}: ${exists?'✓ EXISTS':'❌ MISSING'}`);if(!exists)process.exit(1);});\""
+    "check-icons": "node -e \"const fs=require('fs');const path=require('path');['assets/icons/app-icon.ico','assets/icons/app-icon.icns','assets/icons/app-icon.png'].forEach(p=>{const exists=fs.existsSync(path.resolve(p));console.log(`${p}: ${exists?'✓ EXISTS':'❌ MISSING'}`);if(!exists)process.exit(1);})\"",
+  "prebuild": "npm run copy-pdfjs-worker && npm run check-icons"
+
   },
   "author": "Ryosuke Nogami",
   "license": "MIT",
