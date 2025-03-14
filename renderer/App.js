@@ -27,7 +27,7 @@ const App = () => {
   const [error, setError] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // サイドバーの開閉状態
   const [isPdfViewerOpen, setIsPdfViewerOpen] = useState(false); // PDFビューアーの開閉状態
-  const [pdfViewerSize, setPdfViewerSize] = useState('MEDIUM'); // PDFビューアーのサイズ
+  const [pdfViewerSize, setPdfViewerSize] = useState('SMALL'); // PDFビューアーのサイズ
   const [searchTerm, setSearchTerm] = useState(''); // 検索ワード
 
   // サイドバーの開閉を切り替える関数
@@ -138,6 +138,9 @@ const App = () => {
     // その他の設定の適用
     // PDFビューアーの設定は各コンポーネントでContextから取得して使用
   };
+
+  //デフォルトでPDFはSmallサイズで開く
+  
 
   // 論文データの読み込み
   useEffect(() => {
