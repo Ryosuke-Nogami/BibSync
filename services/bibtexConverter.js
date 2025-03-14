@@ -1,4 +1,4 @@
-// services/bibtexConverter.js
+// services/bibtexConverter.js - DOIからURLを生成する機能を追加
 // BibTeX と JSON メタデータの変換を行うモジュール
 
 /**
@@ -46,7 +46,16 @@ const convertToBibtex = (metadata) => {
     if (metadata.journal) bibtex += `  journal = {${metadata.journal}},\n`;
     if (metadata.volume) bibtex += `  volume = {${metadata.volume}},\n`;
     if (metadata.pages) bibtex += `  pages = {${metadata.pages}},\n`;
-    if (metadata.doi) bibtex += `  doi = {${metadata.doi}},\n`;
+    
+    // DOIの処理
+    if (metadata.doi) {
+      // DOIをクリーンアップ（余分な空白やプレフィックスを削除）
+      const cleanDoi = metadata.doi.trim().replace(/^https?:\/\/doi\.org\//i, '');
+      bibtex += `  doi = {${cleanDoi}},\n`;
+      
+      // DOIからURLを生成
+      bibtex += `  url = {https://doi.org/${cleanDoi}},\n`;
+    }
     
     if (metadata.tags && Array.isArray(metadata.tags) && metadata.tags.length > 0) {
       bibtex += `  keywords = {${metadata.tags.join(', ')}},\n`;
@@ -61,6 +70,7 @@ const convertToBibtex = (metadata) => {
     throw new Error(`BibTeX への変換に失敗しました: ${error.message}`);
   }
 };
+
 /**
  * BibTeX 文字列からエントリをパース
  * @param {string} bibtexString BibTeX 形式の文字列
