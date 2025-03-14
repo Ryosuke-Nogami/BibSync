@@ -1,4 +1,5 @@
 // main.js - Electron のメインプロセス
+
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -6,6 +7,35 @@ const Store = require('electron-store');
 const { scanPaperDirectory, extractMetadata } = require('./services/fileManager');
 const { convertToBibtex, parseFromBibtex } = require('./services/bibtexConverter');
 const { initDatabase } = require('./services/dbManager');
+
+
+// main.js の先頭（const宣言の後、app.whenReadyの前）
+app.name = 'BibSync';
+// main.js の先頭部分に追加
+if (process.platform === 'win32') {
+  app.setAppUserModelId('com.yourdomain.papermanager.BibSync');
+}
+if (process.platform === 'darwin') {
+  app.dock.setIcon(path.join(__dirname, 'assets/icons/app-icon.png'));
+}
+// main.js の先頭部分に追加
+// app.on('ready', () => {
+//   console.log('Application is ready');
+//   console.log('App path:', app.getAppPath());
+//   console.log('Is packaged:', app.isPackaged);
+  
+//   // リソースパスの検証
+//   const possibleIconPaths = [
+//     path.join(__dirname, 'assets', 'icons', 'app-icon.png'),
+//     path.join(process.resourcesPath, 'assets', 'icons', 'app-icon.png'),
+//     path.join(app.getAppPath(), 'assets', 'icons', 'app-icon.png')
+//   ];
+  
+//   console.log('Checking possible icon paths:');
+//   possibleIconPaths.forEach(iconPath => {
+//     console.log(iconPath, '- exists:', fs.existsSync(iconPath));
+//   });
+// });
 
 // 設定ストア
 const store = new Store({
@@ -17,6 +47,27 @@ const store = new Store({
   }
 });
 
+// main.js に以下の関数を追加（既存の関数であれば修正）
+function getAssetPath(...paths) {
+  // 開発モードとプロダクションモードでのパス解決
+  const basePath = app.isPackaged 
+    ? path.join(process.resourcesPath, 'assets')
+    : path.join(__dirname, 'assets');
+  
+  return path.join(basePath, ...paths);
+}
+
+// BrowserWindow 作成部分でこの関数を使用
+const iconPath = getAssetPath('icons', 
+  process.platform === 'win32' ? 'app-icon.ico' : 
+  process.platform === 'darwin' ? 'app-icon.icns' : 
+  'app-icon.png'
+);
+
+console.log('Using icon path:', iconPath);
+console.log('Icon exists:', fs.existsSync(iconPath));
+
+
 // メインウィンドウ
 let mainWindow;
 
@@ -26,10 +77,11 @@ app.whenReady().then(() => {
   initDatabase();
   
   // BrowserWindow 作成部分の修正
+  // main.js の BrowserWindow 作成部分を修正
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    icon: path.join(__dirname, 'assets/icons/app-icon.png'), // Linuxでは.png、Windowsでは.ico
+    icon: iconPath,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

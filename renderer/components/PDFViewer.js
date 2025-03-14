@@ -2,7 +2,14 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { SettingsContext } from '../App';
 import '../styles/pdfViewer.css';
+// PDFViewer.js または関連コンポーネントで
+// PDFJSのワーカーパスを設定
+const pdfWorkerSrc = window.pdfjs?.workerPath || 
+  (app.isPackaged 
+    ? path.join(process.resourcesPath, 'dist', 'pdf.worker.js')
+    : '../dist/pdf.worker.js');
 
+    
 const PDFViewer = ({ pdfPath, onOpenExternal }) => {
   const { settings } = useContext(SettingsContext);
   const [loading, setLoading] = useState(true);
@@ -50,7 +57,7 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
     setLoadError(false);
     setShowFallback(false);
 
-    // PDFを開く
+    // PDFを開く（外部ビューアーの場合は自動で開かない）
     window.paperAPI.openPDF(pdfPath)
       .then(result => {
         if (result.success) {
@@ -72,12 +79,65 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
       });
   }, [pdfPath, settings.externalPdfViewer]);
 
+  useEffect(() => {
+    const webview = webviewRef.current;
+    console.log('webviewRef.current:', webview);
+
+    if (webview) {
+      console.log('webview element found, adding event listeners');
+      
+      const handleDidFinishLoad = () => {
+        console.log('did-finish-load event fired');
+        setPdfLoaded(true);
+        setLoadError(false);
+        setShowFallback(false);
+      };
+
+      const handleDidFailLoad = (event) => {
+        console.log('did-fail-load event fired', event);
+        console.error('PDFの読み込みエラー:', event);
+        setLoadError(true);
+        setPdfLoaded(false);
+        setShowFallback(true);
+      };
+
+      // デバッグ用：webviewのプロパティを確認
+      console.log('webview properties:', {
+        src: webview.src,
+        id: webview.id,
+        className: webview.className
+      });
+
+      webview.addEventListener('did-finish-load', handleDidFinishLoad);
+      webview.addEventListener('did-fail-load', handleDidFailLoad);
+
+      // 追加のイベントリスナーでデバッグ
+      webview.addEventListener('dom-ready', () => {
+        console.log('webview dom-ready event fired');
+      });
+
+      webview.addEventListener('console-message', (e) => {
+        console.log('webview console message:', e.message);
+      });
+
+      return () => {
+        console.log('cleaning up webview event listeners');
+        webview.removeEventListener('did-finish-load', handleDidFinishLoad);
+        webview.removeEventListener('did-fail-load', handleDidFailLoad);
+        webview.removeEventListener('dom-ready', () => {});
+        webview.removeEventListener('console-message', () => {});
+      };
+    } else {
+      console.log('webview element not found');
+    }
+  }, [pdfUrl]);
+
   // 外部ビューアーで開く
   const handleOpenExternal = () => {
     if (onOpenExternal) {
       onOpenExternal();
     } else if (pdfPath) {
-      window.paperAPI.openPDF(pdfPath)
+      window.paperAPI.openPDFExternal(pdfPath)
         .catch(err => {
           console.error('外部ビューアーでのPDF表示エラー:', err);
           setError('外部ビューアーでの表示に失敗しました');
@@ -122,7 +182,7 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
       <div className="pdf-viewer-container">
         <webview
           ref={webviewRef}
-            src={pdfUrl}
+          src={pdfUrl}
           className="pdf-webview"
           plugins="true"
           webpreferences="plugins,javascript=yes"
@@ -147,8 +207,8 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
     <div className="pdf-viewer-container">
       <div className="external-viewer">
         <h3>PDFビューアー</h3>
-        <p>PDFは外部ビューアーで開かれています。</p>
-        <p>PDFが自動的に開かれない場合は、以下のボタンをクリックしてください。</p>
+        <p>外部ビューアーで開くように設定されています。</p>
+        <p>以下のボタンをクリックしてPDFを開いてください。</p>
         <button className="open-external-button" onClick={handleOpenExternal}>
           PDFを開く
         </button>
