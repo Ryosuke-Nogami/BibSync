@@ -1,4 +1,4 @@
-// renderer/App.js - React アプリケーションのメインコンポーネント
+// renderer/App.js - selectedPaper渡し方の修正
 import React, { useState, useEffect, createContext } from 'react';
 import Sidebar from './components/Sidebar';
 import MainView from './components/MainView';
@@ -302,7 +302,7 @@ const App = () => {
           <Sidebar 
             papers={getFilteredPapers()}
             onPaperSelect={setSelectedPaper}
-            selectedPaper={selectedPaper}
+            selectedPaper={selectedPaper}  // ここをちゃんと渡す！
             selectedPapers={selectedPapers}
             onMultipleSelect={handleMultipleSelect}
             loading={loading}

@@ -1,4 +1,4 @@
-// コンポーネント: Sidebar.js - 複数選択BibTeXエクスポート機能追加
+// コンポーネント: Sidebar.js - selectedPaperを確実に渡す
 import React, { useState, useContext } from 'react';
 import PaperList from './PaperList';
 import TagList from './TagList';
@@ -18,8 +18,9 @@ const Sidebar = ({
   searchTerm,
   onSearchChange,
   paperCounts = {},
-  selectedPapers = [],         // 新規追加: 選択された論文の配列
-  onMultipleSelect = null      // 新規追加: 複数選択のハンドラー
+  selectedPaper,        // 追加：選択された論文
+  selectedPapers = [],  // 複数選択された論文の配列
+  onMultipleSelect = null // 複数選択のハンドラー
 }) => {
   const [activeTab, setActiveTab] = useState('papers');
   const { settings, setSettings } = useContext(SettingsContext);
@@ -63,7 +64,7 @@ const Sidebar = ({
         </div>
       </div>
       
-      {/* 複数選択時のアクションバー - 新規追加 */}
+      {/* 複数選択時のアクションバー */}
       {showSelectionControls && (
         <div className="selection-action-bar">
           <span className="selection-count">{selectedPapers.length}件選択中</span>
@@ -107,8 +108,8 @@ const Sidebar = ({
             onPaperSelect={onPaperSelect}
             onScanPapers={onScanPapers}
             loading={loading}
-            selectedPaper={null}               // 単一選択の場合
-            selectedPapers={selectedPapers}     // 複数選択の場合
+            selectedPaper={selectedPaper}     // 確実に選択中の論文を渡す
+            selectedPapers={selectedPapers}   // 複数選択の場合
             onMultipleSelect={onMultipleSelect} // 複数選択ハンドラー
           />
         )}

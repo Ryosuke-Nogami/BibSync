@@ -1,4 +1,4 @@
-/* styles/paperList.css - 複数選択機能のスタイル追加 */
+/* styles/paperList.css - 選択強調スタイル明確化 */
 .paper-list-container {
   height: 100%;
   display: flex;
@@ -96,9 +96,10 @@
 
 .paper-item {
   padding: 12px 16px;
+  border-left: 4px solid transparent;
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   display: flex;
   align-items: flex-start;
 }
@@ -107,8 +108,16 @@
   background-color: var(--hover-color);
 }
 
+/* 強化した選択状態スタイル */
 .paper-item.selected {
   background-color: rgba(3, 102, 214, 0.1);
+  border-left: 4px solid var(--accent-color);
+}
+
+/* ダークモード用の選択状態 */
+.dark .paper-item.selected {
+  background-color: rgba(88, 166, 255, 0.2);
+  border-left: 4px solid var(--accent-color);
 }
 
 .selection-checkbox {
@@ -132,6 +141,12 @@
   color: var(--primary-text);
   font-size: 14px;
   line-height: 1.4;
+}
+
+/* 選択状態の論文タイトルをアクセントカラーに */
+.paper-item.selected .paper-title {
+  color: var(--accent-color);
+  font-weight: 700;
 }
 
 .paper-authors {
@@ -176,18 +191,4 @@
 
 .empty-list p {
   margin: 8px 0;
-}
-
-/* ダークモード */
-.dark .paper-item:hover {
-  background-color: var(--hover-color);
-}
-
-.dark .paper-item.selected {
-  background-color: rgba(88, 166, 255, 0.15);
-}
-
-.dark .paper-tags .tag {
-  background-color: var(--tag-background);
-  color: var(--tag-text);
 }

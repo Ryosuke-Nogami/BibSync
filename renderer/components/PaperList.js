@@ -1,4 +1,4 @@
-// コンポーネント: PaperList.js - 複数選択機能を追加
+// コンポーネント: PaperList.js - 選択強調を修正
 import React, { useState } from 'react';
 import '../styles/paperList.css';
 
