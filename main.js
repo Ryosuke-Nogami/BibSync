@@ -29,6 +29,7 @@ app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    icon: path.join(__dirname, 'assets/icons/app-icon.png'), // Linuxでは.png、Windowsでは.ico
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
