@@ -1,4 +1,4 @@
-// コンポーネント: Sidebar.js - 修正版（変数の重複宣言を修正）
+// コンポーネント: Sidebar.js - 複数選択BibTeXエクスポート機能追加
 import React, { useState, useContext } from 'react';
 import PaperList from './PaperList';
 import TagList from './TagList';
@@ -17,14 +17,12 @@ const Sidebar = ({
   isOpen,
   searchTerm,
   onSearchChange,
-  paperCounts = {} // 新しいprop（デフォルト値として空オブジェクトを設定）
+  paperCounts = {},
+  selectedPapers = [],         // 新規追加: 選択された論文の配列
+  onMultipleSelect = null      // 新規追加: 複数選択のハンドラー
 }) => {
   const [activeTab, setActiveTab] = useState('papers');
   const { settings, setSettings } = useContext(SettingsContext);
-  
-  // 検索条件に合った論文をフィルタリング
-  // 注意: この関数は不要になりました。親コンポーネントのApp.jsでフィルタリングを行っています
-  // フィルタリングされた論文は既にpropsとして渡されています
   
   const handleSettingsChange = async (newSettings) => {
     try {
@@ -34,6 +32,22 @@ const Sidebar = ({
       console.error('設定の更新に失敗しました:', error);
     }
   };
+
+  // 複数選択された論文のBibTeXをエクスポート
+  const handleExportMultipleBibtex = async () => {
+    if (selectedPapers.length === 0) return;
+    
+    try {
+      // 選択された各論文のメタデータを配列として渡す
+      const metadataArray = selectedPapers.map(paper => paper.metadata);
+      await window.paperAPI.exportMultipleBibtex(metadataArray);
+    } catch (error) {
+      console.error('BibTeX エクスポートエラー:', error);
+    }
+  };
+
+  // 選択操作用のボタンを表示するかどうか
+  const showSelectionControls = selectedPapers.length > 0;
 
   return (
     <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
@@ -48,6 +62,22 @@ const Sidebar = ({
           />
         </div>
       </div>
+      
+      {/* 複数選択時のアクションバー - 新規追加 */}
+      {showSelectionControls && (
+        <div className="selection-action-bar">
+          <span className="selection-count">{selectedPapers.length}件選択中</span>
+          <div className="selection-actions">
+            <button 
+              className="export-bibtex-button"
+              onClick={handleExportMultipleBibtex}
+              title="選択した論文のBibTeXをエクスポート"
+            >
+              BibTeXエクスポート
+            </button>
+          </div>
+        </div>
+      )}
       
       <div className="sidebar-tabs">
         <button 
@@ -73,10 +103,13 @@ const Sidebar = ({
       <div className="tab-content">
         {activeTab === 'papers' && (
           <PaperList 
-            papers={papers} // 既にフィルタリングされた論文リスト
+            papers={papers}
             onPaperSelect={onPaperSelect}
             onScanPapers={onScanPapers}
             loading={loading}
+            selectedPaper={null}               // 単一選択の場合
+            selectedPapers={selectedPapers}     // 複数選択の場合
+            onMultipleSelect={onMultipleSelect} // 複数選択ハンドラー
           />
         )}
         {activeTab === 'tags' && (
@@ -84,7 +117,7 @@ const Sidebar = ({
             tags={tags}
             selectedTag={selectedTag}
             onTagSelect={onTagSelect}
-            paperCounts={paperCounts} // paperCountsを渡す
+            paperCounts={paperCounts}
           />
         )}
         {activeTab === 'settings' && (

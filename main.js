@@ -242,9 +242,25 @@ ipcMain.handle('load-note', async (event, id) => {
 });
 
 // BibTeX のエクスポート
+// BibTeX のエクスポート
 ipcMain.handle('export-bibtex', async (event, metadata) => {
   try {
-    const bibtex = convertToBibtex(metadata);
+    let bibtex;
+    
+    // 配列かオブジェクトかを判断して適切に処理
+    if (Array.isArray(metadata)) {
+      // paper オブジェクトの配列の場合は、最初の論文のメタデータを使用
+      if (metadata.length > 0 && metadata[0].metadata) {
+        bibtex = convertToBibtex(metadata[0].metadata);
+      } else {
+        throw new Error('有効な論文データがありません');
+      }
+    } else if (metadata && typeof metadata === 'object') {
+      // metadata オブジェクトがそのまま渡された場合
+      bibtex = convertToBibtex(metadata);
+    } else {
+      throw new Error('有効なメタデータがありません');
+    }
     
     const savePath = await dialog.showSaveDialog({
       title: 'BibTeX ファイルの保存',
@@ -422,6 +438,49 @@ ipcMain.handle('select-directory', async () => {
     }
   } catch (error) {
     console.error('ディレクトリ選択エラー:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+
+// main.js に追加するコード - 複数BibTeX用のIPCハンドラ
+// main.js に以下のIPCハンドラを追加してください
+
+// 複数BibTeXのエクスポート
+ipcMain.handle('export-multiple-bibtex', async (event, metadataArray) => {
+  try {
+    if (!Array.isArray(metadataArray) || metadataArray.length === 0) {
+      throw new Error('エクスポートする論文データがありません');
+    }
+    
+    // 各論文のBibTeXを生成
+    const bibtexEntries = metadataArray.map(metadata => {
+      try {
+        return convertToBibtex(metadata);
+      } catch (error) {
+        console.error('変換エラー:', error);
+        return `% 変換エラー: ${metadata.title || 'タイトルなし'}\n`;
+      }
+    });
+    
+    // すべてのエントリを結合
+    const bibtexContent = bibtexEntries.join('\n\n');
+    
+    // ファイル保存ダイアログを表示
+    const savePath = await dialog.showSaveDialog({
+      title: 'BibTeX ファイルの保存',
+      defaultPath: path.join(app.getPath('downloads'), 'papers.bib'),
+      filters: [{ name: 'BibTeX', extensions: ['bib'] }]
+    });
+    
+    if (!savePath.canceled) {
+      fs.writeFileSync(savePath.filePath, bibtexContent);
+      return { success: true, path: savePath.filePath };
+    } else {
+      return { success: false, canceled: true };
+    }
+  } catch (error) {
+    console.error('BibTeX エクスポートエラー:', error);
     return { success: false, error: error.message };
   }
 });

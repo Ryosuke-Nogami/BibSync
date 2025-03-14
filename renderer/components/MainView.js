@@ -129,10 +129,11 @@ const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer 
   
   // BibTeX のエクスポート
   const handleExportBibtex = async () => {
-    if (!paper) return;
+    if (!paper || !paper.metadata) return;
     
     try {
-      await window.paperAPI.exportBibtex([paper]);
+      // メタデータだけを渡す
+      await window.paperAPI.exportBibtex(paper.metadata);
     } catch (error) {
       console.error('BibTeX エクスポートエラー:', error);
     }

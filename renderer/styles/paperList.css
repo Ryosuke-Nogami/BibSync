@@ -1,4 +1,4 @@
-/* styles/paperList.css - GitHub風スタイル */
+/* styles/paperList.css - 複数選択機能のスタイル追加 */
 .paper-list-container {
   height: 100%;
   display: flex;
@@ -21,7 +21,12 @@
   color: var(--primary-text);
 }
 
-.scan-button {
+.paper-list-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.scan-button, .multi-select-button {
   padding: 6px 12px;
   font-size: 13px;
   background-color: var(--secondary-background);
@@ -32,13 +37,54 @@
   transition: all 0.2s;
 }
 
-.scan-button:hover {
+.scan-button:hover, .multi-select-button:hover {
   background-color: var(--hover-color);
 }
 
 .scan-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.multi-select-button.active {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+/* 選択コントロール */
+.selection-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: var(--secondary-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.selection-count {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary-text);
+}
+
+.selection-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.selection-buttons button {
+  padding: 4px 10px;
+  font-size: 12px;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.selection-buttons button:hover {
+  background-color: var(--hover-color);
 }
 
 .paper-list {
@@ -53,6 +99,8 @@
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
   transition: background-color 0.2s;
+  display: flex;
+  align-items: flex-start;
 }
 
 .paper-item:hover {
@@ -61,6 +109,21 @@
 
 .paper-item.selected {
   background-color: rgba(3, 102, 214, 0.1);
+}
+
+.selection-checkbox {
+  margin-right: 10px;
+  padding-top: 2px;
+}
+
+.selection-checkbox input {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.paper-content {
+  flex: 1;
 }
 
 .paper-title {

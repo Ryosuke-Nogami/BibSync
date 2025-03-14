@@ -8,24 +8,37 @@
  */
 const convertToBibtex = (metadata) => {
   try {
+    if (!metadata || typeof metadata !== 'object') {
+      throw new Error('無効なメタデータ形式です');
+    }
+    
     // タイプの決定（journal なら article, 他は inproceedings など）
     const type = metadata.journal ? 'article' : 'inproceedings';
     
     // キーの生成（最初の著者の姓 + 年 + タイトルの最初の単語）
-    const firstAuthor = metadata.authors && metadata.authors.length > 0 
-      ? metadata.authors[0].split(' ').pop() 
-      : 'unknown';
+    let firstAuthor = 'unknown';
+    if (metadata.authors && Array.isArray(metadata.authors) && metadata.authors.length > 0) {
+      const authorParts = metadata.authors[0].split(' ');
+      firstAuthor = authorParts.length > 0 ? authorParts[authorParts.length - 1] : 'unknown';
+    }
+    
     const year = metadata.year || 'unknown';
-    const firstWord = metadata.title ? metadata.title.split(' ')[0].toLowerCase() : 'unknown';
+    
+    let firstWord = 'unknown';
+    if (metadata.title && typeof metadata.title === 'string') {
+      const titleParts = metadata.title.split(' ');
+      firstWord = titleParts.length > 0 ? titleParts[0].toLowerCase() : 'unknown';
+    }
+    
     const key = `${firstAuthor}${year}${firstWord}`;
     
     // BibTeX エントリの開始
     let bibtex = `@${type}{${key},\n`;
     
-    // 各フィールドの追加
+    // 各フィールドの追加（存在する場合のみ）
     if (metadata.title) bibtex += `  title = {${metadata.title}},\n`;
     
-    if (metadata.authors && metadata.authors.length > 0) {
+    if (metadata.authors && Array.isArray(metadata.authors) && metadata.authors.length > 0) {
       bibtex += `  author = {${metadata.authors.join(' and ')}},\n`;
     }
     
@@ -35,7 +48,7 @@ const convertToBibtex = (metadata) => {
     if (metadata.pages) bibtex += `  pages = {${metadata.pages}},\n`;
     if (metadata.doi) bibtex += `  doi = {${metadata.doi}},\n`;
     
-    if (metadata.tags && metadata.tags.length > 0) {
+    if (metadata.tags && Array.isArray(metadata.tags) && metadata.tags.length > 0) {
       bibtex += `  keywords = {${metadata.tags.join(', ')}},\n`;
     }
     
@@ -48,7 +61,6 @@ const convertToBibtex = (metadata) => {
     throw new Error(`BibTeX への変換に失敗しました: ${error.message}`);
   }
 };
-
 /**
  * BibTeX 文字列からエントリをパース
  * @param {string} bibtexString BibTeX 形式の文字列

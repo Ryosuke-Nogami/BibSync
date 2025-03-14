@@ -78,6 +78,10 @@ contextBridge.exposeInMainWorld('paperAPI', {
   // BibTeX
   exportBibtex: (metadata) => ipcRenderer.invoke('export-bibtex', metadata),
   importBibtex: () => ipcRenderer.invoke('import-bibtex'),
+
+  // paperAPI オブジェクト内に追加
+  exportMultipleBibtex: (metadataArray) => ipcRenderer.invoke('export-multiple-bibtex', metadataArray),
+
   
   // 外部リンク
   openExternalURL: (url) => ipcRenderer.send('open-external-url', url),
@@ -92,6 +96,7 @@ contextBridge.exposeInMainWorld('paperAPI', {
   parseBibtex: (bibtexString) => ipcRenderer.invoke('parse-bibtex', bibtexString),
     // ディレクトリ選択ダイアログ
   selectDirectory: () => ipcRenderer.invoke('select-directory'),
+  
   
   // リソースパスの取得
   getResourcePath: (relativePath) => {

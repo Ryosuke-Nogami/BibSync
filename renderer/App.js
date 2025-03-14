@@ -18,6 +18,7 @@ const PDF_WIDTH_PRESETS = {
 const App = () => {
   const [papers, setPapers] = useState([]);
   const [selectedPaper, setSelectedPaper] = useState(null);
+  const [selectedPapers, setSelectedPapers] = useState([]); // 複数選択用
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tags, setTags] = useState([]);
@@ -43,6 +44,11 @@ const App = () => {
   const changePdfViewerSize = (size) => {
     setPdfViewerSize(size);
     document.documentElement.style.setProperty('--pdf-viewer-width', PDF_WIDTH_PRESETS[size]);
+  };
+
+  // 複数選択のハンドラー
+  const handleMultipleSelect = (papers) => {
+    setSelectedPapers(papers);
   };
 
   // 設定の初期化と監視
@@ -297,6 +303,8 @@ const App = () => {
             papers={getFilteredPapers()}
             onPaperSelect={setSelectedPaper}
             selectedPaper={selectedPaper}
+            selectedPapers={selectedPapers}
+            onMultipleSelect={handleMultipleSelect}
             loading={loading}
             tags={tags}
             selectedTag={selectedTag}
@@ -304,7 +312,7 @@ const App = () => {
             isOpen={isSidebarOpen}
             searchTerm={searchTerm}
             onSearchChange={handleSearchChange}
-            paperCounts={paperCounts} // タグごとの論文数
+            paperCounts={paperCounts}
             onScanPapers={handleScanPapers}
           />
           <MainView 
