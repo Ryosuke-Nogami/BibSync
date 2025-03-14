@@ -1,6 +1,6 @@
 # BibSync - 研究論文管理アプリケーション
 
-BibSync（リポジトリ名：paper-manager）は、研究者や学生のための論文管理アプリケーションです。論文PDFとそのメタデータ、メモを一元管理し、効率的な研究活動をサポートします。
+BibSyncは、研究者や学生のための論文管理アプリケーションです。論文PDFとそのメタデータ、メモを一元管理し、効率的な研究活動をサポートします。
 
 ![アプリケーションスクリーンショット](docs/BibSyncScreenshot.png)
 
@@ -41,7 +41,7 @@ BibSync（リポジトリ名：paper-manager）は、研究者や学生のため
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/Ryosuke-Nogami/paper-manager.git
+git clone https://github.com/Ryosuke-Nogami/BibSync.git
 cd paper-manager
 # 依存パッケージをインストール
 npm install
