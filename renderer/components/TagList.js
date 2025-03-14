@@ -1,8 +1,8 @@
-// コンポーネント: TagList.js
+// コンポーネント: TagList.js - 文字列配列でも正しく動作するよう修正
 import React from 'react';
 import '../styles/tagList.css';
 
-const TagList = ({ tags = [], selectedTag, onTagSelect }) => {
+const TagList = ({ tags = [], selectedTag, onTagSelect, paperCounts = {} }) => {
   if (!Array.isArray(tags)) {
     return (
       <div className="tag-list-container">
@@ -30,19 +30,28 @@ const TagList = ({ tags = [], selectedTag, onTagSelect }) => {
             onClick={() => onTagSelect(null)}
           >
             <span className="tag-name">すべて</span>
-            <span className="tag-count">{tags.reduce((sum, tag) => sum + (tag.paper_count || 0), 0)}</span>
+            <span className="tag-count">
+              {Object.values(paperCounts).reduce((sum, count) => sum + count, 0) || tags.length}
+            </span>
           </li>
           
-          {tags.map(tag => (
-            <li 
-              key={tag.id || tag.name}
-              className={`tag-item ${selectedTag === tag.name ? 'active' : ''}`}
-              onClick={() => onTagSelect(tag.name)}
-            >
-              <span className="tag-name">{tag.name}</span>
-              <span className="tag-count">{tag.paper_count || 0}</span>
-            </li>
-          ))}
+          {tags.map((tag) => {
+            // tagが文字列かオブジェクトかを判断して適切に処理
+            const tagName = typeof tag === 'string' ? tag : tag.name;
+            const tagId = typeof tag === 'string' ? tag : (tag.id || tag.name);
+            const count = paperCounts[tagName] || (tag.paper_count || 0);
+            
+            return (
+              <li 
+                key={tagId}
+                className={`tag-item ${selectedTag === tagName ? 'active' : ''}`}
+                onClick={() => onTagSelect(tagName)}
+              >
+                <span className="tag-name">{tagName}</span>
+                <span className="tag-count">{count}</span>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

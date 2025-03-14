@@ -21,6 +21,7 @@ const App = () => {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [tags, setTags] = useState([]);
+  const [paperCounts, setPaperCounts] = useState({}); // タグごとの論文カウント
   const [selectedTag, setSelectedTag] = useState(null);
   const [error, setError] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // サイドバーの開閉状態
@@ -79,14 +80,34 @@ const App = () => {
     };
   }, []);
 
-  // 論文からタグを抽出
+  // 論文からタグを抽出して集計
   useEffect(() => {
     if (papers.length > 0) {
-      const allTags = papers.reduce((acc, paper) => {
+      // タグの抽出とカウント
+      const tagCounts = {};
+      
+      // すべての論文からタグを収集し、カウントする
+      papers.forEach(paper => {
         const paperTags = paper.metadata?.tags || [];
-        return [...new Set([...acc, ...paperTags])];
-      }, []);
-      setTags(allTags.sort());
+        paperTags.forEach(tag => {
+          if (!tagCounts[tag]) {
+            tagCounts[tag] = 0;
+          }
+          tagCounts[tag] += 1;
+        });
+      });
+      
+      // ユニークなタグの配列を作成
+      const uniqueTags = Object.keys(tagCounts);
+      
+      // タグをソート
+      uniqueTags.sort();
+      
+      // タグリストを設定
+      setTags(uniqueTags);
+      
+      // タグカウントも別の状態で保持
+      setPaperCounts(tagCounts);
     }
   }, [papers]);
 
@@ -169,6 +190,38 @@ const App = () => {
     }
   };
 
+  // タグと検索語による論文のフィルタリング
+  const getFilteredPapers = () => {
+    // まず検索語でフィルタリング
+    let filtered = papers.filter(paper => {
+      if (!searchTerm.trim()) return true;
+      
+      const searchLower = searchTerm.toLowerCase();
+      
+      return (
+        (paper.metadata?.title && paper.metadata.title.toLowerCase().includes(searchLower)) ||
+        (paper.metadata?.authors && paper.metadata.authors.some(author => 
+          author.toLowerCase().includes(searchLower)
+        )) ||
+        (paper.metadata?.tags && paper.metadata.tags.some(tag => 
+          tag.toLowerCase().includes(searchLower)
+        )) ||
+        (paper.metadata?.year && paper.metadata.year.toString().includes(searchLower)) ||
+        (paper.metadata?.journal && paper.metadata.journal.toLowerCase().includes(searchLower)) ||
+        (paper.metadata?.doi && paper.metadata.doi.toLowerCase().includes(searchLower))
+      );
+    });
+    
+    // 次にタグでフィルタリング（タグが選択されている場合）
+    if (selectedTag) {
+      filtered = filtered.filter(paper => 
+        paper.metadata?.tags && paper.metadata.tags.includes(selectedTag)
+      );
+    }
+    
+    return filtered;
+  };
+
   // エラーが発生した場合
   if (error) {
     return <div className="error-container">
@@ -182,6 +235,33 @@ const App = () => {
   if (!settings) {
     return <div className="loading">Loading...</div>;
   }
+
+  // 論文リストを再スキャンする処理
+  const handleScanPapers = () => {
+    setLoading(true);
+    window.paperAPI.scanPapers()
+      .then(newPapers => {
+        // 各論文のメタデータを読み込む
+        return Promise.all(
+          newPapers.map(async (paper) => {
+            const result = await window.paperAPI.loadMetadata(paper.id);
+            if (result.success && result.metadata) {
+              return { ...paper, metadata: result.metadata };
+            }
+            return paper;
+          })
+        );
+      })
+      .then(papersWithMetadata => {
+        setPapers(papersWithMetadata);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('論文スキャンエラー:', err);
+        setError('論文のスキャンに失敗しました。');
+        setLoading(false);
+      });
+  };
 
   return (
     <SettingsContext.Provider value={{ settings, setSettings }}>
@@ -214,7 +294,7 @@ const App = () => {
         </div>
         <div className="content-container">
           <Sidebar 
-            papers={papers}
+            papers={getFilteredPapers()}
             onPaperSelect={setSelectedPaper}
             selectedPaper={selectedPaper}
             loading={loading}
@@ -224,19 +304,8 @@ const App = () => {
             isOpen={isSidebarOpen}
             searchTerm={searchTerm}
             onSearchChange={handleSearchChange}
-            onScanPapers={() => {
-              setLoading(true);
-              window.paperAPI.scanPapers()
-                .then(papers => {
-                  setPapers(papers);
-                  setLoading(false);
-                })
-                .catch(err => {
-                  console.error('論文スキャンエラー:', err);
-                  setError('論文のスキャンに失敗しました。');
-                  setLoading(false);
-                });
-            }}
+            paperCounts={paperCounts} // タグごとの論文数
+            onScanPapers={handleScanPapers}
           />
           <MainView 
             paper={selectedPaper}
