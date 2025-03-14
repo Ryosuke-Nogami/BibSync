@@ -90,6 +90,8 @@ contextBridge.exposeInMainWorld('paperAPI', {
 
   // BibTeX文字列のパース
   parseBibtex: (bibtexString) => ipcRenderer.invoke('parse-bibtex', bibtexString),
+    // ディレクトリ選択ダイアログ
+  selectDirectory: () => ipcRenderer.invoke('select-directory'),
   
   // リソースパスの取得
   getResourcePath: (relativePath) => {
@@ -103,3 +105,10 @@ console.log('APIs exposed to renderer:', Object.keys({
   pdfjs: true,
   paperAPI: true
 }));
+
+
+// preload.js に追加するコード - ディレクトリ選択ダイアログのAPI公開
+
+// 以下のコードをpreload.jsのpaperAPI定義に追加します
+// 既存のexpose関数の一部として追加します
+

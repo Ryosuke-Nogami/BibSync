@@ -26,6 +26,7 @@ const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // サイドバーの開閉状態
   const [isPdfViewerOpen, setIsPdfViewerOpen] = useState(false); // PDFビューアーの開閉状態
   const [pdfViewerSize, setPdfViewerSize] = useState('MEDIUM'); // PDFビューアーのサイズ
+  const [searchTerm, setSearchTerm] = useState(''); // 検索ワード
 
   // サイドバーの開閉を切り替える関数
   const toggleSidebar = () => {
@@ -92,6 +93,11 @@ const App = () => {
   // タグ選択のハンドラー
   const handleTagSelect = (tag) => {
     setSelectedTag(tag);
+  };
+
+  // 検索語の変更ハンドラー
+  const handleSearchChange = (value) => {
+    setSearchTerm(value);
   };
 
   // 設定を適用する関数
@@ -216,6 +222,21 @@ const App = () => {
             selectedTag={selectedTag}
             onTagSelect={handleTagSelect}
             isOpen={isSidebarOpen}
+            searchTerm={searchTerm}
+            onSearchChange={handleSearchChange}
+            onScanPapers={() => {
+              setLoading(true);
+              window.paperAPI.scanPapers()
+                .then(papers => {
+                  setPapers(papers);
+                  setLoading(false);
+                })
+                .catch(err => {
+                  console.error('論文スキャンエラー:', err);
+                  setError('論文のスキャンに失敗しました。');
+                  setLoading(false);
+                });
+            }}
           />
           <MainView 
             paper={selectedPaper}

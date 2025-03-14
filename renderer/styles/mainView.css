@@ -2,10 +2,12 @@
 .main-view {
   flex: 1;
   padding: 24px;
-  overflow-y: auto;
+  overflow-y: auto; /* この設定を維持して、全体がスクロール可能になるようにする */
   background-color: var(--primary-background);
   transition: width var(--transition-speed);
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .main-view-empty {
@@ -87,9 +89,9 @@
   font-weight: 600;
 }
 
-.tab-content {
+/* .tab-content {
   padding: 16px 0;
-}
+} */
 
 /* PDFビューアーが開いているときのスタイル */
 .main-view.pdf-viewer-open {
@@ -131,4 +133,37 @@
   .main-view.pdf-viewer-open {
     display: none;
   }
+}
+
+
+/* mainView.css に追加するスタイル - ノートコンテナの修正 */
+
+/* 以下の新しいスタイルをmainView.cssに追加 */
+
+.tab-content {
+  padding: 16px 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* flexboxの高さ計算を正しくする */
+  /* overflow: hidden を削除 - これがスクロールを妨げていた */
+}
+
+.notes-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* flexboxの高さ計算を正しくする */
+  /* ノートエディタ内のスクロールを許可するためにoverflow: hiddenを削除 */
+}
+
+
+/* ノートエディタのスクロール設定を維持 */
+.markdown-editor, .markdown-preview {
+  overflow-y: auto; /* スクロールバーを表示する */
+}
+
+/* PDFビューアーが開いている時のメインビューのスタイル - 変更なし */
+.main-view.pdf-viewer-open {
+  width: calc(100% - var(--sidebar-width) - var(--pdf-viewer-width));
 }

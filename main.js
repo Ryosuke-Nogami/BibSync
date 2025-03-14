@@ -400,3 +400,28 @@ ipcMain.handle('load-metadata', async (event, id) => {
     return { success: false, error: error.message };
   }
 });
+
+
+// main.js に追加するコード - ディレクトリ選択ダイアログのハンドラー
+
+// 以下のコードをmain.jsのIPCハンドラー設定セクションに追加します
+// 既存のipcMain.handle定義の近くに配置します
+
+// ディレクトリ選択ダイアログ
+ipcMain.handle('select-directory', async () => {
+  try {
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory'],
+      title: 'フォルダを選択'
+    });
+    
+    if (result.canceled) {
+      return { success: false, canceled: true };
+    } else {
+      return { success: true, path: result.filePaths[0] };
+    }
+  } catch (error) {
+    console.error('ディレクトリ選択エラー:', error);
+    return { success: false, error: error.message };
+  }
+});

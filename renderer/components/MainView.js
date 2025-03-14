@@ -250,11 +250,13 @@ const MainView = ({ paper, onMetadataUpdate, isPdfViewerOpen, onTogglePdfViewer 
           />
         )}
         {activeTab === 'notes' && (
-          <NoteEditor 
-            content={note}
-            onChange={setNote}
-            onSave={handleNoteSave}
-          />
+          <div className="notes-container">
+            <NoteEditor 
+              content={note}
+              onChange={setNote}
+              onSave={handleNoteSave}
+            />
+          </div>
         )}
       </div>
     </div>

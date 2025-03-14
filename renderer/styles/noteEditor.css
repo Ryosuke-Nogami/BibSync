@@ -1,4 +1,4 @@
-/* styles/noteEditor.css - GitHub風スタイル */
+/* styles/noteEditor.css - GitHub風スタイル - エディタ領域拡大版 */
 .note-editor {
   height: 100%;
   display: flex;
@@ -70,9 +70,9 @@
 .editor-container {
   display: flex;
   gap: 20px;
-  height: 400px;
-  margin-bottom: 16px;
   flex: 1;
+  min-height: 0; /* これを追加 - flexboxがはみ出るのを防止 */
+  overflow: hidden; /* これを追加 - 内容がはみ出た場合にスクロール */
   transition: all 0.3s ease;
 }
 
@@ -83,6 +83,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-width: 0; /* これを追加 - flexboxがはみ出るのを防止 */
 }
 
 /* 編集モード */
@@ -91,6 +92,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-width: 0; /* これを追加 */
 }
 
 .editor-container.edit .preview-pane {
@@ -103,6 +105,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-width: 0; /* これを追加 */
 }
 
 .editor-container.preview .editor-pane {
@@ -120,6 +123,8 @@
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   line-height: 1.6;
   font-size: 14px;
+  min-height: 0; /* 固定高さを削除 */
+  overflow-y: auto; /* スクロールを追加 */
 }
 
 .markdown-editor:focus {
@@ -138,6 +143,7 @@
   overflow-y: auto;
   line-height: 1.6;
   font-size: 14px;
+  min-height: 0; /* 固定高さを削除 */
 }
 
 /* Markdownプレビューのスタイル */
@@ -361,4 +367,9 @@
 .dark .save-status.pending {
   background-color: rgba(210, 153, 34, 0.1);
   color: #d29922;
+}
+
+/* 特にエディタモードでの表示を改善 */
+.editor-container.edit .editor-pane {
+  width: 100%;
 }

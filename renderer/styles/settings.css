@@ -162,3 +162,61 @@
 .dark .form-group input[type="text"]:focus {
   box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
 }
+
+/* settings.css に追加するスタイル - ディレクトリ設定欄の修正 */
+
+/* 以下のスタイルを既存のsettings.cssに追加または置き換えます */
+
+.directory-input {
+  display: flex;
+  gap: 8px;
+}
+
+.directory-input input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--primary-background);
+  color: var(--primary-text);
+  font-size: 14px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.directory-input button {
+  padding: 8px 12px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.directory-input button:hover {
+  background-color: var(--primary-hover);
+}
+
+/* 保存ボタン用のスタイル */
+.directory-input button:last-child {
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  border: 1px solid var(--border-color);
+}
+
+.directory-input button:last-child:hover {
+  background-color: var(--hover-color);
+}
+
+/* ダークモード */
+.dark .directory-input input {
+  background-color: var(--code-background);
+  border-color: var(--border-color);
+}
+
+.dark .directory-input button:last-child {
+  background-color: var(--secondary-background);
+  border-color: var(--border-color);
+}
