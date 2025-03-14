@@ -47,20 +47,6 @@ const Settings = ({ settings, onSettingsChange }) => {
     onSettingsChange(updatedSettings);
   };
 
-  // フォルダ選択ダイアログを開く
-  // Note: main.jsにselectDirectoryハンドラが実装されていないため、実装しました
-  const handleBrowseDirectory = async (type) => {
-    try {
-      // ダイアログは現状サポートされていないことをユーザーに伝える
-      alert('この機能は現在実装中です。直接パスを入力して保存ボタンを押してください。');
-      
-      // 実際にはここで window.paperAPI.selectDirectory を呼び出すことになりますが、
-      // その関数は現在未実装です
-    } catch (error) {
-      console.error('ディレクトリ選択エラー:', error);
-    }
-  };
-
   if (!settings) {
     return <div className="settings-loading">設定を読み込んでいます...</div>;
   }
@@ -96,10 +82,10 @@ const Settings = ({ settings, onSettingsChange }) => {
               onChange={(e) => handleDirectoryInputChange('papers', e.target.value)}
               placeholder="論文フォルダのパスを入力"
             />
-            <button onClick={() => handleBrowseDirectory('papers')}>
-              参照
-            </button>
-            <button onClick={() => handleSaveDirectory('papers')}>
+            <button 
+              onClick={() => handleSaveDirectory('papers')}
+              className="save-directory-button"
+            >
               保存
             </button>
           </div>
@@ -113,10 +99,10 @@ const Settings = ({ settings, onSettingsChange }) => {
               onChange={(e) => handleDirectoryInputChange('notes', e.target.value)}
               placeholder="ノートフォルダのパスを入力"
             />
-            <button onClick={() => handleBrowseDirectory('notes')}>
-              参照
-            </button>
-            <button onClick={() => handleSaveDirectory('notes')}>
+            <button 
+              onClick={() => handleSaveDirectory('notes')}
+              className="save-directory-button"
+            >
               保存
             </button>
           </div>

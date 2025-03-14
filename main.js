@@ -18,24 +18,6 @@ if (process.platform === 'win32') {
 if (process.platform === 'darwin') {
   app.dock.setIcon(path.join(__dirname, 'assets/icons/app-icon.png'));
 }
-// main.js の先頭部分に追加
-// app.on('ready', () => {
-//   console.log('Application is ready');
-//   console.log('App path:', app.getAppPath());
-//   console.log('Is packaged:', app.isPackaged);
-  
-//   // リソースパスの検証
-//   const possibleIconPaths = [
-//     path.join(__dirname, 'assets', 'icons', 'app-icon.png'),
-//     path.join(process.resourcesPath, 'assets', 'icons', 'app-icon.png'),
-//     path.join(app.getAppPath(), 'assets', 'icons', 'app-icon.png')
-//   ];
-  
-//   console.log('Checking possible icon paths:');
-//   possibleIconPaths.forEach(iconPath => {
-//     console.log(iconPath, '- exists:', fs.existsSync(iconPath));
-//   });
-// });
 
 // 設定ストア
 const store = new Store({
@@ -71,13 +53,9 @@ console.log('Icon exists:', fs.existsSync(iconPath));
 // メインウィンドウ
 let mainWindow;
 
-// アプリ起動時の処理
-app.whenReady().then(() => {
-  // データベース初期化
-  initDatabase();
-  
+// createWindow 関数の定義を追加（修正箇所）
+function createWindow() {
   // BrowserWindow 作成部分の修正
-  // main.js の BrowserWindow 作成部分を修正
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -113,8 +91,17 @@ app.whenReady().then(() => {
     mainWindow.webContents.openDevTools();
   }
   
-  // アプリケーション起動時に論文ディレクトリをスキャン
-  scanPapersOnStartup();
+  // ウィンドウがロードされた後に論文ディレクトリをスキャン
+  mainWindow.webContents.on('did-finish-load', () => {
+    scanPapersOnStartup();
+  });
+}
+
+// アプリ起動時の処理
+app.whenReady().then(() => {
+  // データベース初期化
+  initDatabase();
+  createWindow();
 });
 
 // すべてのウィンドウが閉じられたらアプリを終了
@@ -148,7 +135,9 @@ async function scanPapersOnStartup() {
     
     // 論文ディレクトリのスキャン
     const papers = await scanPaperDirectory(papersDir);
-    mainWindow.webContents.send('papers-scanned', papers);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('papers-scanned', papers);
+    }
   } catch (error) {
     console.error('起動時のスキャンエラー:', error);
   }
@@ -164,10 +153,12 @@ ipcMain.handle('get-settings', () => {
 ipcMain.handle('update-settings', (event, settings) => {
   store.set(settings);
   // 設定変更をメインウィンドウに通知
-  mainWindow.webContents.send('settings-changed', settings);
-  // ダークモードの即時反映
-  if (settings.darkMode !== undefined) {
-    mainWindow.webContents.send('theme-changed', settings.darkMode);
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send('settings-changed', settings);
+    // ダークモードの即時反映
+    if (settings.darkMode !== undefined) {
+      mainWindow.webContents.send('theme-changed', settings.darkMode);
+    }
   }
   return store.store;
 });
@@ -294,7 +285,6 @@ ipcMain.handle('load-note', async (event, id) => {
   }
 });
 
-// BibTeX のエクスポート
 // BibTeX のエクスポート
 ipcMain.handle('export-bibtex', async (event, metadata) => {
   try {
@@ -470,12 +460,6 @@ ipcMain.handle('load-metadata', async (event, id) => {
   }
 });
 
-
-// main.js に追加するコード - ディレクトリ選択ダイアログのハンドラー
-
-// 以下のコードをmain.jsのIPCハンドラー設定セクションに追加します
-// 既存のipcMain.handle定義の近くに配置します
-
 // ディレクトリ選択ダイアログ
 ipcMain.handle('select-directory', async () => {
   try {
@@ -494,10 +478,6 @@ ipcMain.handle('select-directory', async () => {
     return { success: false, error: error.message };
   }
 });
-
-
-// main.js に追加するコード - 複数BibTeX用のIPCハンドラ
-// main.js に以下のIPCハンドラを追加してください
 
 // 複数BibTeXのエクスポート
 ipcMain.handle('export-multiple-bibtex', async (event, metadataArray) => {
