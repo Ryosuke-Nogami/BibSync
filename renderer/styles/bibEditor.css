@@ -196,10 +196,6 @@
   background-color: var(--primary-hover) !important;
 }
 
-.format-button {
-  color: var(--primary-text) !important;
-}
-
 .bib-editor-footer {
   padding: 12px 16px;
   border-top: 1px solid var(--border-color);
@@ -215,8 +211,8 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
   font-weight: 500;
+  font-size: 14px;
 }
 
 .apply-button:hover:not(:disabled) {

@@ -50,13 +50,7 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
     
     // 変更があった時点で自動保存
     onChange(updatedFormData);
-  };
-  
-  // 変更を保存
-  const handleSave = () => {
-    onChange(formData);
-    setDataChanged(false);
-    showStatusMessage('メタデータを保存しました', 'success');
+    showStatusMessage('メタデータを自動保存しました', 'success');
   };
   
   // 著者を追加
@@ -72,6 +66,7 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
       
       // 変更があった時点で自動保存
       onChange(updatedFormData);
+      showStatusMessage('メタデータを自動保存しました', 'success');
     }
   };
   
@@ -88,6 +83,7 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
     
     // 変更があった時点で自動保存
     onChange(updatedFormData);
+    showStatusMessage('メタデータを自動保存しました', 'success');
   };
   
   // タグを追加
@@ -103,6 +99,7 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
       
       // 変更があった時点で自動保存
       onChange(updatedFormData);
+      showStatusMessage('メタデータを自動保存しました', 'success');
     }
   };
   
@@ -119,6 +116,7 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
     
     // 変更があった時点で自動保存
     onChange(updatedFormData);
+    showStatusMessage('メタデータを自動保存しました', 'success');
   };
   
   // DOI から情報を取得
@@ -148,26 +146,14 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
     setShowBibEditor(false);
   };
   
-  // タブ変更前に保存が必要か確認
+  // コンポーネントがアンマウントされる前に変更があれば保存
   useEffect(() => {
-    // タブを切り替える前/コンポーネントがアンマウントされる前に変更があれば保存を促す
-    if (dataChanged) {
-      const handleBeforeUnload = (e) => {
-        e.preventDefault();
-        e.returnValue = '';
-      };
-      
-      window.addEventListener('beforeunload', handleBeforeUnload);
-      
-      return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-        // 変更があれば自動保存
-        if (dataChanged) {
-          handleSave();
-        }
-      };
-    }
-  }, [dataChanged, formData]);
+    return () => {
+      if (dataChanged) {
+        onChange(formData);
+      }
+    };
+  }, [dataChanged, formData, onChange]);
   
   // BibTeX からメタデータを更新
   const handleBibTeXSubmit = (bibEntry) => {
@@ -216,13 +202,6 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
       {statusMessage && (
         <div className={`status-message ${statusMessage.type}`}>
           {statusMessage.text}
-        </div>
-      )}
-      
-      {dataChanged && (
-        <div className="unsaved-changes-warning">
-          <span>未保存の変更があります</span>
-          <button onClick={handleSave} className="save-now-button">今すぐ保存</button>
         </div>
       )}
       
@@ -356,14 +335,6 @@ const MetadataEditor = ({ metadata, onChange, onFetchDOI }) => {
       </div>
       
       <div className="form-actions">
-        <button 
-          type="button" 
-          className={`save-button ${dataChanged ? 'save-needed' : ''}`} 
-          onClick={handleSave}
-          disabled={!dataChanged}
-        >
-          メタデータを保存
-        </button>
         <button type="button" className="bibtex-button" onClick={handleShowBibEditor}>
           BibTeX エディタ
         </button>

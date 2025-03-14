@@ -1,3 +1,4 @@
+/* styles/toggleSwitch.css - GitHub風スタイル */
 .toggle-switch-container {
   display: flex;
   align-items: center;
@@ -25,8 +26,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
+  background-color: var(--border-color);
+  transition: .3s;
   border-radius: 34px;
 }
 
@@ -38,16 +39,17 @@
   left: 3px;
   bottom: 3px;
   background-color: white;
-  transition: .4s;
+  transition: .3s;
   border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 input:checked + .slider {
-  background-color: #007AFF;
+  background-color: var(--accent-color);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #007AFF;
+  box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.2);
 }
 
 input:checked + .slider:before {
@@ -56,7 +58,24 @@ input:checked + .slider:before {
 
 .toggle-label {
   font-size: 14px;
-  color: var(--text-color);
+  color: var(--primary-text);
   cursor: pointer;
   user-select: none;
-} 
+}
+
+/* ダークモード対応 */
+.dark .slider {
+  background-color: #484f58;
+}
+
+.dark .slider:before {
+  background-color: #e6edf3;
+}
+
+.dark input:focus + .slider {
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+}
+
+.dark .toggle-label {
+  color: var(--primary-text);
+}

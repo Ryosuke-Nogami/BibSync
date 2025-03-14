@@ -1,5 +1,4 @@
-
-/* styles/index.css */
+/* styles/index.css - GitHub風スタイル */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,33 +6,35 @@
 }
 
 body {
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   line-height: 1.6;
   font-size: 16px;
   overflow: hidden;
+  color: var(--primary-text);
+  background-color: var(--primary-background);
+  transition: color 0.2s, background-color 0.2s;
 }
 
 h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
+  color: var(--primary-text);
+  font-weight: 600;
 }
 
 h1 {
   font-size: 1.75rem;
-  font-weight: 600;
 }
 
 h2 {
   font-size: 1.5rem;
-  font-weight: 500;
 }
 
 h3 {
   font-size: 1.25rem;
-  font-weight: 500;
 }
 
 a {
-  color: var(--primary-color);
+  color: var(--accent-color);
   text-decoration: none;
 }
 
@@ -44,20 +45,24 @@ a:hover {
 input, textarea, select {
   font-family: inherit;
   font-size: inherit;
-  padding: 8px;
+  padding: 8px 12px;
   border: 1px solid var(--border-color);
-  border-radius: 4px;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  border-radius: 6px;
+  background-color: var(--primary-background);
+  color: var(--primary-text);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input:focus, textarea:focus, select:focus {
   outline: none;
-  border-color: var(--primary-color);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.2);
 }
 
 button {
   font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .container {
@@ -72,11 +77,53 @@ button {
   align-items: center;
   height: 100px;
   font-style: italic;
-  color: var(--sidebar-text);
+  color: var(--secondary-text);
 }
 
 .empty-list {
   padding: 20px;
   text-align: center;
-  color: var(--sidebar-text);
+  color: var(--secondary-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* エラー表示 */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 2rem;
+  text-align: center;
+  color: var(--primary-text);
+  background-color: var(--primary-background);
+}
+
+.error-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #d73a49;
+}
+
+.error-container p {
+  margin-bottom: 1rem;
+  max-width: 600px;
+}
+
+/* ダークモード対応 */
+.dark input, .dark textarea, .dark select {
+  background-color: var(--code-background);
+  border-color: var(--border-color);
+}
+
+.dark input:focus, .dark textarea:focus, .dark select:focus {
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+}
+
+/* アクセシビリティ向上のためのフォーカス表示 */
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 1px;
 }

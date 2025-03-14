@@ -1,4 +1,4 @@
-/* metadataEditor.css - GitHub風スタイル */
+/* metadataEditor.css - GitHub風スタイル - 「保存ボタン」削除に伴う更新 */
 .metadata-editor {
   padding: 20px;
   position: relative;
@@ -153,23 +153,8 @@
 
 .form-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-top: 24px;
-}
-
-.save-button {
-  padding: 10px 20px;
-  background-color: var(--accent-color);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.save-button:hover {
-  background-color: var(--primary-hover);
 }
 
 .bibtex-button {
@@ -253,54 +238,6 @@
   to { opacity: 0; }
 }
 
-/* 未保存の変更警告バナー */
-.unsaved-changes-warning {
-  background-color: #fffbe6;
-  border: 1px solid #ffe58f;
-  color: #faad14;
-  padding: 10px 16px;
-  margin-bottom: 16px;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-}
-
-.save-now-button {
-  background-color: #faad14;
-  color: white;
-  border: none;
-  padding: 4px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.save-now-button:hover {
-  background-color: #d48806;
-}
-
-/* 保存ボタンのハイライト */
-.save-button.save-needed {
-  background-color: #fa8c16;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(250, 140, 22, 0.4); }
-  70% { box-shadow: 0 0 0 8px rgba(250, 140, 22, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(250, 140, 22, 0); }
-}
-
-.save-button:disabled {
-  background-color: #d9d9d9;
-  color: #999;
-  cursor: not-allowed;
-  animation: none;
-}
-
 /* ダークモード */
 .dark .metadata-editor {
   color: var(--primary-text);
@@ -341,12 +278,6 @@
 .dark .bibtex-button {
   background-color: var(--secondary-background);
   border-color: var(--border-color);
-}
-
-.dark .unsaved-changes-warning {
-  background-color: rgba(250, 173, 20, 0.15);
-  border-color: rgba(250, 173, 20, 0.3);
-  color: #faad14;
 }
 
 .dark .status-message.success {

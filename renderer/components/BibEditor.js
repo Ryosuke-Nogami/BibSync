@@ -72,24 +72,6 @@ const BibEditor = ({ onSubmit, onClose }) => {
     }
   };
 
-  // 簡易BibTeXフォーマット
-  const handleFormat = () => {
-    if (!bibtex.trim()) return;
-    
-    try {
-      // 基本的な整形（インデントと改行）
-      let formatted = bibtex
-        .replace(/{/g, "{\n  ")
-        .replace(/,(?=\s*[a-zA-Z])/g, ",\n  ")
-        .replace(/}/g, "\n}");
-      
-      setBibtex(formatted);
-    } catch (err) {
-      // フォーマットに失敗しても元のテキストを維持
-      console.error('フォーマットエラー:', err);
-    }
-  };
-
   // エントリリストの表示
   const renderEntryList = () => {
     if (parsedEntries.length === 0) return null;
@@ -163,13 +145,6 @@ const BibEditor = ({ onSubmit, onClose }) => {
               className="import-button"
             >
               ファイルからインポート
-            </button>
-            <button 
-              onClick={handleFormat} 
-              disabled={isLoading || !bibtex.trim()}
-              className="format-button"
-            >
-              整形
             </button>
             <button 
               onClick={handleParseInput} 
