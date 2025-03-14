@@ -1,4 +1,4 @@
-/* styles/tagList.css - GitHub風スタイル */
+/* styles/tagList.css - GitHub風スタイル - ダークモード選択時の可読性修正 */
 .tag-list-container {
   padding: 16px;
 }
@@ -80,9 +80,16 @@
 
 .dark .tag-item.active {
   background-color: var(--accent-color);
+  color: white; /* テキストを白に設定して背景との対比を明確にする */
 }
 
 .dark .tag-count {
   background-color: var(--tag-background);
   color: var(--tag-text);
+}
+
+/* ダークモードで選択されているタグのカウントの色を調整 */
+.dark .tag-item.active .tag-count {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white; /* 選択中のタグカウントも白色に */
 }
