@@ -8,34 +8,15 @@ const { scanPaperDirectory, extractMetadata } = require('./services/fileManager'
 const { convertToBibtex, parseFromBibtex } = require('./services/bibtexConverter');
 const { initDatabase } = require('./services/dbManager');
 
-
 // main.js の先頭（const宣言の後、app.whenReadyの前）
 app.name = 'BibSync';
-// main.js の先頭部分に追加
+// アプリのID設定
 if (process.platform === 'win32') {
   app.setAppUserModelId('com.yourdomain.papermanager.BibSync');
 }
 if (process.platform === 'darwin') {
   app.dock.setIcon(path.join(__dirname, 'assets/icons/app-icon.png'));
 }
-// main.js の先頭部分に追加
-// app.on('ready', () => {
-//   console.log('Application is ready');
-//   console.log('App path:', app.getAppPath());
-//   console.log('Is packaged:', app.isPackaged);
-  
-//   // リソースパスの検証
-//   const possibleIconPaths = [
-//     path.join(__dirname, 'assets', 'icons', 'app-icon.png'),
-//     path.join(process.resourcesPath, 'assets', 'icons', 'app-icon.png'),
-//     path.join(app.getAppPath(), 'assets', 'icons', 'app-icon.png')
-//   ];
-  
-//   console.log('Checking possible icon paths:');
-//   possibleIconPaths.forEach(iconPath => {
-//     console.log(iconPath, '- exists:', fs.existsSync(iconPath));
-//   });
-// });
 
 // 設定ストア
 const store = new Store({
@@ -47,7 +28,7 @@ const store = new Store({
   }
 });
 
-// main.js に以下の関数を追加（既存の関数であれば修正）
+// アセットパスを取得する関数
 function getAssetPath(...paths) {
   // 開発モードとプロダクションモードでのパス解決
   const basePath = app.isPackaged 
@@ -57,7 +38,7 @@ function getAssetPath(...paths) {
   return path.join(basePath, ...paths);
 }
 
-// BrowserWindow 作成部分でこの関数を使用
+// アイコンパスの取得
 const iconPath = getAssetPath('icons', 
   process.platform === 'win32' ? 'app-icon.ico' : 
   process.platform === 'darwin' ? 'app-icon.icns' : 
@@ -67,17 +48,15 @@ const iconPath = getAssetPath('icons',
 console.log('Using icon path:', iconPath);
 console.log('Icon exists:', fs.existsSync(iconPath));
 
-
 // メインウィンドウ
 let mainWindow;
 
-// アプリ起動時の処理
-app.whenReady().then(() => {
+// メインウィンドウを作成する関数
+function createWindow() {
   // データベース初期化
   initDatabase();
   
-  // BrowserWindow 作成部分の修正
-  // main.js の BrowserWindow 作成部分を修正
+  // BrowserWindow 作成
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -115,7 +94,10 @@ app.whenReady().then(() => {
   
   // アプリケーション起動時に論文ディレクトリをスキャン
   scanPapersOnStartup();
-});
+}
+
+// アプリ起動時の処理
+app.whenReady().then(createWindow);
 
 // すべてのウィンドウが閉じられたらアプリを終了
 app.on('window-all-closed', () => {
@@ -295,7 +277,6 @@ ipcMain.handle('load-note', async (event, id) => {
 });
 
 // BibTeX のエクスポート
-// BibTeX のエクスポート
 ipcMain.handle('export-bibtex', async (event, metadata) => {
   try {
     let bibtex;
@@ -470,12 +451,6 @@ ipcMain.handle('load-metadata', async (event, id) => {
   }
 });
 
-
-// main.js に追加するコード - ディレクトリ選択ダイアログのハンドラー
-
-// 以下のコードをmain.jsのIPCハンドラー設定セクションに追加します
-// 既存のipcMain.handle定義の近くに配置します
-
 // ディレクトリ選択ダイアログ
 ipcMain.handle('select-directory', async () => {
   try {
@@ -494,10 +469,6 @@ ipcMain.handle('select-directory', async () => {
     return { success: false, error: error.message };
   }
 });
-
-
-// main.js に追加するコード - 複数BibTeX用のIPCハンドラ
-// main.js に以下のIPCハンドラを追加してください
 
 // 複数BibTeXのエクスポート
 ipcMain.handle('export-multiple-bibtex', async (event, metadataArray) => {

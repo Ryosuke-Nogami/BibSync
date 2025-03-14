@@ -2,14 +2,10 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { SettingsContext } from '../App';
 import '../styles/pdfViewer.css';
-// PDFViewer.js または関連コンポーネントで
-// PDFJSのワーカーパスを設定
-const pdfWorkerSrc = window.pdfjs?.workerPath || 
-  (app.isPackaged 
-    ? path.join(process.resourcesPath, 'dist', 'pdf.worker.js')
-    : '../dist/pdf.worker.js');
 
-    
+// PDFJSのワーカーパス設定
+const pdfWorkerSrc = window.pdfjs?.workerPath || '../dist/pdf.worker.js';
+
 const PDFViewer = ({ pdfPath, onOpenExternal }) => {
   const { settings } = useContext(SettingsContext);
   const [loading, setLoading] = useState(true);
@@ -21,13 +17,10 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
   const webviewRef = useRef(null);
 
   // PDFの読み込み完了時のハンドラー
-  const handleWebViewLoad = (event) => {
-    const webview = event.target;
-    if (webview && !webview.isLoadingMainFrame()) {
-      setPdfLoaded(true);
-      setLoadError(false);
-      setShowFallback(false);
-    }
+  const handleWebViewLoad = () => {
+    setPdfLoaded(true);
+    setLoadError(false);
+    setShowFallback(false);
   };
 
   // PDFの読み込みエラー時のハンドラー
@@ -79,56 +72,32 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
       });
   }, [pdfPath, settings.externalPdfViewer]);
 
+  // webviewイベントリスナーの設定
   useEffect(() => {
     const webview = webviewRef.current;
-    console.log('webviewRef.current:', webview);
-
-    if (webview) {
-      console.log('webview element found, adding event listeners');
-      
+    
+    if (webview && pdfUrl) {
       const handleDidFinishLoad = () => {
-        console.log('did-finish-load event fired');
         setPdfLoaded(true);
         setLoadError(false);
         setShowFallback(false);
       };
 
       const handleDidFailLoad = (event) => {
-        console.log('did-fail-load event fired', event);
         console.error('PDFの読み込みエラー:', event);
         setLoadError(true);
         setPdfLoaded(false);
         setShowFallback(true);
       };
 
-      // デバッグ用：webviewのプロパティを確認
-      console.log('webview properties:', {
-        src: webview.src,
-        id: webview.id,
-        className: webview.className
-      });
-
       webview.addEventListener('did-finish-load', handleDidFinishLoad);
       webview.addEventListener('did-fail-load', handleDidFailLoad);
 
-      // 追加のイベントリスナーでデバッグ
-      webview.addEventListener('dom-ready', () => {
-        console.log('webview dom-ready event fired');
-      });
-
-      webview.addEventListener('console-message', (e) => {
-        console.log('webview console message:', e.message);
-      });
-
+      // クリーンアップ関数
       return () => {
-        console.log('cleaning up webview event listeners');
         webview.removeEventListener('did-finish-load', handleDidFinishLoad);
         webview.removeEventListener('did-fail-load', handleDidFailLoad);
-        webview.removeEventListener('dom-ready', () => {});
-        webview.removeEventListener('console-message', () => {});
       };
-    } else {
-      console.log('webview element not found');
     }
   }, [pdfUrl]);
 
@@ -185,9 +154,8 @@ const PDFViewer = ({ pdfPath, onOpenExternal }) => {
           src={pdfUrl}
           className="pdf-webview"
           plugins="true"
-          webpreferences="plugins,javascript=yes"
-          preload="./preload.js"
-          partition="persist:pdf"
+          webpreferences="plugins=true,javascript=true"
+          preload="../preload.js"
         />
         {showFallback && (
           <div className="pdf-fallback">
