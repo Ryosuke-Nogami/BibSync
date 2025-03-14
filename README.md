@@ -42,7 +42,7 @@ BibSyncは、研究者や学生のための論文管理アプリケーション�
 ```bash
 # リポジトリをクローン
 git clone https://github.com/Ryosuke-Nogami/BibSync.git
-cd BibSync
+cd paper-manager
 # 依存パッケージをインストール
 npm install
 
